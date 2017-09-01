@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
-namespace Infra.Repositories.Migrations
+namespace Infra.Repositories.Migrations.Loja
 {
     [DbContext(typeof(LojaContext))]
-    [Migration("20170830194943_init-loja")]
-    partial class initloja
+    [Migration("20170901183731_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,9 +26,9 @@ namespace Infra.Repositories.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("CreationDate");
-
                     b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime>("LastModified");
 
                     b.Property<string>("Nome");
 
@@ -42,6 +42,10 @@ namespace Infra.Repositories.Migrations
                     b.Property<int>("PedidoId");
 
                     b.Property<int>("ProdutoId");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime>("LastModified");
 
                     b.Property<int>("Quantidade");
 
@@ -59,9 +63,9 @@ namespace Infra.Repositories.Migrations
 
                     b.Property<int?>("ClienteId");
 
-                    b.Property<DateTime>("CreationDate");
-
                     b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime>("LastModified");
 
                     b.HasKey("Id");
 
@@ -75,9 +79,9 @@ namespace Infra.Repositories.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("CreationDate");
-
                     b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime>("LastModified");
 
                     b.Property<string>("Nome");
 

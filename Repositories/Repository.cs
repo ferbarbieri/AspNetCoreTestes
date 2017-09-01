@@ -35,9 +35,7 @@ namespace Repositories
 
         public PaginatedResults<TEntity> GetAllBy(Expression<Func<TEntity, bool>> predicate, PaginationInput paginationInput)
         {
-            var count = DbSet.AsNoTracking()
-                .Where(predicate)
-                .Count();
+            var count = DbSet.Where(predicate).Count();
 
             var results = DbSet.AsNoTracking()
                 .Where(predicate)
@@ -54,10 +52,21 @@ namespace Repositories
 
         public PaginatedResults<TEntity> GetAll(PaginationInput paginationInput)
         {
-            // TODO: Ver melhor jeito de fazer isso sem repetir o isDeleted.
-            return GetAllBy(c=>!c.IsDeleted, paginationInput);
-        }
+            // TODO: Ver melhor jeito de fazer isso sem repetir
+            var count = DbSet.Count();
 
+            var results = DbSet.AsNoTracking()
+                .Skip(paginationInput.RecordsToSkip)
+                .Take(paginationInput.RecordsPerPage)
+                .ToList();
+
+            return new PaginatedResults<TEntity>(
+                results: results,
+                totalRecords: count,
+                currentPage: paginationInput.CurrentPage,
+                recordsPerPage: paginationInput.RecordsPerPage);
+        }
+        
         public virtual void Insert(TEntity entity)
         {
             DbSet.Add(entity);
@@ -72,8 +81,7 @@ namespace Repositories
 
         public virtual void Delete(TEntity entity)
         {
-            entity.Delete();
-            DbSet.Update(entity);
+            DbSet.Remove(entity);
             Db.SaveChanges();
         }
         

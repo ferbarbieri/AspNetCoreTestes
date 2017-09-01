@@ -23,34 +23,40 @@ namespace App.WebAPI.Controllers
 
         // GET: api/values
         [HttpGet]
-        public PaginatedResults<Cliente> Get(int pagina, int porPagina)
+        public IActionResult Get(int pagina, int porPagina)
         {
-            return _appService.ListarTodos(pagina, porPagina);
+            return Ok(_appService.ListarTodos(pagina, porPagina));
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            return Ok(_appService.Obter(id));
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult Post([FromBody]string nome)
         {
+            _appService.Adicionar(nome);
+            return Ok();
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public IActionResult Put(int id, [FromBody]string novoNome)
         {
+            _appService.Atualizar(id, novoNome);
+            return Ok();
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            _appService.Excluir(id);
+            return Ok();
         }
     }
 }

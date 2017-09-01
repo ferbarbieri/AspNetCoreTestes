@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
-namespace Infra.Repositories.Migrations.Admin
+namespace Infra.Repositories.Migrations
 {
     [DbContext(typeof(AdminContext))]
     partial class AdminContextModelSnapshot : ModelSnapshot
@@ -25,9 +25,9 @@ namespace Infra.Repositories.Migrations.Admin
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("CreationDate");
-
                     b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime>("LastModified");
 
                     b.Property<string>("Nome");
 

@@ -18,7 +18,7 @@ namespace Tests.Repositorios
         public void CriarObterAtualizarExcluirUsuario()
         {
             // O certo é ter um teste por método!
-            using (var context = new AdminContext())
+            using (var context = new AdminContext(ContextOptions<AdminContext>.GetOptions()))
             {
                 var repo = new UsuarioRepository(context);
                 var usuario = new Usuario("Fernando");

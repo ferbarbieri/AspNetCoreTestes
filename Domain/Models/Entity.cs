@@ -11,23 +11,6 @@ namespace Domain.Models
         [JsonProperty(Order = -2)] // Garante que será serializado primeiro
         public int Id { get; protected set; }
 
-        [JsonIgnore] // Não deve serializar
-        public bool IsDeleted { get; protected set; }
-
-        [JsonIgnore] // Não deve serializar
-        public DateTime CreationDate { get; protected set; }
-
-        public void Delete()
-        {
-            IsDeleted = true;
-        }
-
-        protected Entity()
-        {
-            IsDeleted = false;
-            CreationDate = DateTime.Now;
-        }
-
         public bool Equals(Entity obj)
         {
             var compareTo = obj as Entity;

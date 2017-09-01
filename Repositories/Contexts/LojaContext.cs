@@ -1,7 +1,9 @@
 ﻿using Domain.Models;
+using Infra.Repositories.Contexts.Config;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Infra.Repositories.Contexts
@@ -19,50 +21,52 @@ namespace Infra.Repositories.Contexts
 
         #region Config
 
-        public LojaContext() => ChangeTracker.QueryTrackingBehavior =
-                QueryTrackingBehavior.NoTracking;
-
+        public LojaContext(DbContextOptions<LojaContext> options) : base(options) =>
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Mapeamento de tabelas
             modelBuilder
-
+                .AddDefaultProperties()
                 .Entity<Cliente>(entity =>
                 {
                     entity
                     .ToTable("Cliente")
-                    .HasQueryFilter(p => !p.IsDeleted);
+                    .AddIsDeletedFilter();
                 })
 
                 .Entity<Pedido>(entity =>
                 {
                     entity
                     .ToTable("Pedido")
-                    .HasQueryFilter(p => !p.IsDeleted);
+                    .AddIsDeletedFilter();
                 })
 
                 .Entity<Produto>(entity =>
                 {
                     entity
                     .ToTable("Produto")
-                    .HasQueryFilter(p => !p.IsDeleted);
+                    .AddIsDeletedFilter();
                 })
 
                 .Entity<ItensPedido>(entity =>
                 {
                     entity
                     .ToTable("ItemPedido")
-                    .HasKey(x => new { x.PedidoId, x.ProdutoId});
+                    .HasKey(x => new { x.PedidoId, x.ProdutoId });
                 })
                 ;
+            
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            // Todo: Refatorar para pegar de arquivo de configurações. - Estudar para pegar de base diferente dependendo do usuario.
-            optionsBuilder.UseSqlServer(
-                "Server = (localdb)\\mssqllocaldb; Database = AspNetCoreTestes; Trusted_Connection = True; ");
-        }
         #endregion
+
+        public override int SaveChanges()
+        {
+            // Adiciono as propriedades padrão para serem tratadas na hora de salvar.
+            DefaultPropertiesConfig.SaveDefaultPropertiesChanges(ChangeTracker);
+            return base.SaveChanges();
+        }
     }
 }

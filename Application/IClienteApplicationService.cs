@@ -10,7 +10,7 @@ namespace Application
     {
         Cliente Obter(int id);
         
-        void Adicionar(Cliente cliente);
+        void Adicionar(string nome);
 
         PaginatedResults<Cliente> ListarTodos(int paginaAtual, int totalPorPagina);
 
@@ -18,6 +18,6 @@ namespace Application
 
         void Excluir(int id);
 
-        void Atualizar(Cliente cliente);
+        void Atualizar(int id, string novoNome);
     }
 }

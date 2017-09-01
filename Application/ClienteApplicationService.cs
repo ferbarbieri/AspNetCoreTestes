@@ -1,6 +1,7 @@
 ﻿using Domain.Events;
 using Domain.Models;
 using Domain.RepositoryInterfaces;
+using Domain.SharedKernel.Exceptions;
 using Domain.SharedKernel.Queries;
 using SharedKernel;
 using System;
@@ -18,20 +19,21 @@ namespace Application
         
         public Cliente Obter(int id)
         {
-            return _repo.GetById(id);
+            return ObterCliente(id);
         }
 
-        public void Adicionar(Cliente cliente)
+        public void Adicionar(string nome)
         {
+            var cliente = new Cliente(nome);
             _repo.Insert(cliente);
 
             var userEvent = new ClienteCriadoEvent(cliente);
 
             // Registro dinamico de evento:
-            DomainEvents.Register<ClienteCriadoEvent>((args) =>
+            /*DomainEvents.Register<ClienteCriadoEvent>((args) =>
             {
                 Logger.Log($"Cliente foi crado: {args.Cliente.Nome}, Gerar registro e enviar email de confirmação.");
-            });
+            });*/
 
             DomainEvents.Raise(userEvent);
         }
@@ -51,14 +53,23 @@ namespace Application
 
         public void Excluir(int id)
         {
-            throw new NotImplementedException();
+            _repo.Delete(ObterCliente(id));
         }
 
-        public void Atualizar(Cliente cliente)
+        public void Atualizar(int id, string novoNome)
         {
-            throw new NotImplementedException();
+            var cliente = ObterCliente(id);
+            cliente.UpdateInfo(novoNome);
+            _repo.Update(cliente);
         }
 
-        
+        private Cliente ObterCliente(int id)
+        {
+            var cliente = _repo.GetById(id);
+            if (cliente == null)
+                throw new NotFoundException("Cliente não encontrado", id);
+
+            return cliente;
+        }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using Domain.Models;
+using Infra.Repositories.Contexts.Config;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Infra.Repositories.Contexts
@@ -16,29 +19,30 @@ namespace Infra.Repositories.Contexts
         
         #region Config
 
-        public AdminContext() => ChangeTracker.QueryTrackingBehavior =
-               QueryTrackingBehavior.NoTracking;
+        public AdminContext(DbContextOptions<AdminContext> options) : base(options) => 
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Mapeamentos
             modelBuilder
-
+                .AddDefaultProperties()
                 .Entity<Usuario>(entity =>
                 {
                     entity
                     .ToTable("Usuario")
-                    .HasQueryFilter(p => !p.IsDeleted);
-                })
-                ;
-        }
+                    .AddIsDeletedFilter();
+                });
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            // Todo: Refatorar para pegar de arquivo de configurações. - Estudar para pegar de base diferente dependendo do usuario.
-            optionsBuilder.UseSqlServer(
-                "Server = (localdb)\\mssqllocaldb; Database = AspNetCoreTestes; Trusted_Connection = True; ");
+            // Adiciona também as propriedades padrão para todas as entidades
         }
+        
         #endregion
+
+        public override int SaveChanges()
+        {
+            DefaultPropertiesConfig.SaveDefaultPropertiesChanges(ChangeTracker);
+            return base.SaveChanges();
+        }
     }
 }

@@ -27,6 +27,7 @@ using App.WebAPI.Middleware;
 using Microsoft.AspNetCore.Diagnostics;
 using System.Net;
 using Infra.Repositories.Contexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace App.WebAPI
 {
@@ -121,22 +122,29 @@ namespace App.WebAPI
             container.Register<IUsuarioApplicationService, UsuarioApplicationService>(Lifestyle.Scoped);
             container.Register<IPedidoApplicationService, PedidoApplicationService>(Lifestyle.Scoped);
             container.Register<IClienteApplicationService, ClienteApplicationService>(Lifestyle.Scoped);
-
-
+            
             // Repositories
             container.Register<IUsuarioRepository, UsuarioRepository>(Lifestyle.Scoped);
             container.Register<IPedidoRepository, PedidoRepository>(Lifestyle.Scoped);
             container.Register<IProdutoRepository, ProdutoRepository>(Lifestyle.Scoped);
             container.Register<IClienteRepository, ClienteRepository>(Lifestyle.Scoped);
-
-
+            
             //DbContexts
-            container.Register<AdminContext, AdminContext>(Lifestyle.Scoped);
-            container.Register<LojaContext, LojaContext>(Lifestyle.Scoped);
             //TODO: Verificar se está sendo realizado o dispose.
-            //container.Register(() => app.GetRequiredRequestService<AdminContext>(), Lifestyle.Scoped);
-            //container.Register(() => app.GetRequiredRequestService<LojaContext>(), Lifestyle.Scoped);
+            container.Register<AdminContext>(() => 
+            {
+                var options = new DbContextOptionsBuilder<AdminContext>();
+                options.UseSqlServer(Configuration.GetConnectionString("Meritus"));
+                return new AdminContext(options.Options);
+            }, Lifestyle.Scoped);
 
+            container.Register<LojaContext>(() =>
+            {
+                var options = new DbContextOptionsBuilder<LojaContext>();
+                options.UseSqlServer(Configuration.GetConnectionString("Meritus"));
+                return new LojaContext(options.Options);
+            }, Lifestyle.Scoped);
+            
             // Registro de todos os event handlers
             // Observação: Por questões de performance, registrar apenas uma classe por projeto
             Assembly[] assemblies = new[] {

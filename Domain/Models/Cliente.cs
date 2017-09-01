@@ -18,5 +18,14 @@ namespace Domain.Models
 
             Nome = nome;
         }
+
+        public void UpdateInfo(string novoNome)
+        {
+            new Guard()
+                .NotNullOrEmpty("Nome", novoNome)
+                .Validate();
+
+            Nome = novoNome;
+        }
     }
 }

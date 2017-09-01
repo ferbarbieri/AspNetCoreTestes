@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
-namespace Infra.Repositories.Migrations.Admin
+namespace Infra.Repositories.Migrations
 {
     [DbContext(typeof(AdminContext))]
-    [Migration("20170830195004_init-admin")]
-    partial class initadmin
+    [Migration("20170901175758_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,9 +26,9 @@ namespace Infra.Repositories.Migrations.Admin
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("CreationDate");
-
                     b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime>("LastModified");
 
                     b.Property<string>("Nome");
 
