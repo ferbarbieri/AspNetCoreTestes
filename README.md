@@ -13,6 +13,8 @@ Utiliza:
 
 
 ## Inicialização do banco de dados:
+
 Para inicializar o projeto, executar no Package Manager:
-Update-Database -Context AdminContext
-Update-Database -Context LojaContext
+
+- Update-Database -Context AdminContext
+- Update-Database -Context LojaContext
