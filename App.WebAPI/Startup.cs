@@ -73,20 +73,29 @@ namespace App.WebAPI
             #region configuração de container ioc
             InitializeContainer(app);
 
+            // Registro dos middlewares
             container.Register<ApiRequestMiddleware>();
+            container.Register<ErrorHandlerMiddleware>();
 
             container.Verify();
 
+            // Aplica os middlewares
             app.Use((c, next) => container.GetInstance<ApiRequestMiddleware>().Invoke(c, next));
+            app.Use((c, next) => container.GetInstance<ErrorHandlerMiddleware>().Invoke(c, next));
 
             #endregion
 
-            /*
+            // Aplica o MVC
+            app.UseMvc();
+
+            /*  TRatamento padrão de erros do AspNet Core.
+             *  Estamos usando um Middleware pra isso, fica mais organizado.
+             *  
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }*/
-
+            /*
             app.UseExceptionHandler(
                  options =>
                  {
@@ -104,9 +113,7 @@ namespace App.WebAPI
                      });
                  }
                 );
-
-
-            app.UseMvc();
+                */
         }
 
         private void InitializeContainer(IApplicationBuilder app)

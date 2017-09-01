@@ -27,7 +27,7 @@ namespace Domain.SharedKernel.Exceptions
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.Append("Os seguntes campos informados não são válidos:\n");
+            sb.Append("Os seguintes campos informados não são válidos:\n");
             
             foreach(var val in FieldsValidation.Where(c => !c.IsValid))
             {

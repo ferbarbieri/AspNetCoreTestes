@@ -13,8 +13,8 @@ namespace Tests.Repositorios
     {
         
         [Fact]
-        [Trait("Type", "Integration")]
-        [Trait("Repositorios", "Usuario")]
+        [Trait("Integration", "")]
+        [Trait("Repositorios", "")]
         public void CriarObterAtualizarExcluirUsuario()
         {
             // O certo é ter um teste por método!

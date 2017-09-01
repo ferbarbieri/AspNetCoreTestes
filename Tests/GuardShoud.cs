@@ -7,6 +7,7 @@ namespace Tests
 {
     public class GuardShoud
     {
+        [Trait("Unit Test","")]
         [Theory]
         [InlineData(1, 1.1d, "string nao nula", "string nao vazia", "fbarbieri@live.com")]
         [InlineData(1000, -500.1d, "", "0", "Fbarbieri@viceri.com.br")]
@@ -24,6 +25,7 @@ namespace Tests
             Assert.Null(ex);
         }
 
+        [Trait("Unit Test", "")]
         [Theory]
         [InlineData(3, 5.1d, null, "", "fbarbieri")]
         [InlineData(-10, 500.1d, null, null, "Fbarbieri@viceri")]
