@@ -6,6 +6,7 @@ using System.Text;
 
 namespace Domain.SharedKernel.Exceptions
 {
+    [Serializable]
     public class FieldsValidationException : Exception
     {
         public IList<FieldValidationInfo> FieldsValidation { get; private set; }

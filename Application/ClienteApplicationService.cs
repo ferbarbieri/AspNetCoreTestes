@@ -28,19 +28,13 @@ namespace Application
             _repo.Insert(cliente);
 
             var userEvent = new ClienteCriadoEvent(cliente);
-
-            // Registro dinamico de evento:
-            /*DomainEvents.Register<ClienteCriadoEvent>((args) =>
-            {
-                Logger.Log($"Cliente foi crado: {args.Cliente.Nome}, Gerar registro e enviar email de confirmação.");
-            });*/
-
+           
             DomainEvents.Raise(userEvent);
         }
         
-        public PaginatedResults<Cliente> ListarTodos(int paginaAtual, int itensPorPagina)
+        public PaginatedResults<Cliente> ListarTodos(int paginaAtual, int totalPorPagina)
         {
-            return _repo.GetAll(new PaginationInput(paginaAtual, itensPorPagina));
+            return _repo.GetAll(new PaginationInput(paginaAtual, totalPorPagina));
         }
 
         public PaginatedResults<Cliente> FiltrarPorNome(string nome, int paginaAtual, int itensPorPagina)

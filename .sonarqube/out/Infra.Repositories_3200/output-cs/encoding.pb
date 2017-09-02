@@ -1,0 +1,14 @@
+A
+8D:\Dev\AspNetCoreTestes\Repositories\ClienteRepositoy.csutf-8F
+=D:\Dev\AspNetCoreTestes\Repositories\Contexts\AdminContext.csutf-8V
+MD:\Dev\AspNetCoreTestes\Repositories\Contexts\Config\AdminDbContextFactory.csutf-8X
+OD:\Dev\AspNetCoreTestes\Repositories\Contexts\Config\DefaultPropertiesConfig.csutf-8U
+LD:\Dev\AspNetCoreTestes\Repositories\Contexts\Config\LojaDbContextFactory.csutf-8E
+<D:\Dev\AspNetCoreTestes\Repositories\Contexts\LojaContext.csutf-8V
+MD:\Dev\AspNetCoreTestes\Repositories\EventHandlers\UserCreatedEventHandler.csutf-8O
+FD:\Dev\AspNetCoreTestes\Repositories\Migrations\20170901175758_init.csutf-8T
+KD:\Dev\AspNetCoreTestes\Repositories\Migrations\Loja\20170901183731_init.csutf-8A
+8D:\Dev\AspNetCoreTestes\Repositories\PedidoRepository.csutf-8A
+8D:\Dev\AspNetCoreTestes\Repositories\ProdutoRepositoy.csutf-8;
+2D:\Dev\AspNetCoreTestes\Repositories\Repository.csutf-8B
+9D:\Dev\AspNetCoreTestes\Repositories\UsuarioRepository.csutf-8

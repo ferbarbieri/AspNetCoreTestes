@@ -4,7 +4,7 @@ using System;
 
 namespace DependencyResolver
 {
-    public class ContainerFactory
+    public static class ContainerFactory
     {
         public static Container Container => GetContainerInstance();
 

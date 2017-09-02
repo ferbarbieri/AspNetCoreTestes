@@ -9,14 +9,14 @@ using Domain.SharedKernel.Queries;
 
 namespace Repositories
 {
-    public abstract class Repository<TEntity, TContext> : IRepository<TEntity>
+    public abstract class Repository<TEntity, TContext> : IRepository<TEntity>, IDisposable 
         where TEntity : Entity
         where TContext : DbContext
     {
         protected TContext Db;
         protected DbSet<TEntity> DbSet;
 
-        public Repository(TContext context)
+        protected Repository(TContext context)
         {
             Db = context;
             DbSet = Db.Set<TEntity>();

@@ -34,7 +34,7 @@ namespace App.WebAPI
     public class Startup
     {
 
-        private Container container = ContainerFactory.Container;
+        private readonly Container container = ContainerFactory.Container;
 
         public Startup(IConfiguration configuration)
         {

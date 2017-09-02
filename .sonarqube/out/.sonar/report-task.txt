@@ -1,0 +1,7 @@
+organization=viceri-github
+projectKey=AspNetCoreTestes
+serverUrl=https://sonarcloud.io
+serverVersion=6.5.0.27571
+dashboardUrl=https://sonarcloud.io/dashboard/index/AspNetCoreTestes
+ceTaskId=AV5AklVvzsTf1U4IR9zr
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AV5AklVvzsTf1U4IR9zr

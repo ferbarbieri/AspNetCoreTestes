@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Domain.SharedKernel.Exceptions
 {
+    [Serializable]
     public class NotFoundException : Exception
     {
         public int Id { get; private set; }

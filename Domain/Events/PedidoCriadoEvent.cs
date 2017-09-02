@@ -9,7 +9,7 @@ namespace Domain.Events
     public class PedidoCriadoEvent : IDomainEvent
     {
 
-        public Pedido Pedido;
+        public Pedido Pedido { get; private set; }
 
         public PedidoCriadoEvent(Pedido pedido)
         {

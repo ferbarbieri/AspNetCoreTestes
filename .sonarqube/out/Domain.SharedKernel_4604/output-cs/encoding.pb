@@ -1,0 +1,12 @@
+<
+3D:\Dev\AspNetCoreTestes\SharedKernel\DomainEvent.csutf-8U
+LD:\Dev\AspNetCoreTestes\SharedKernel\Exceptions\FieldsValidationException.csutf-8M
+DD:\Dev\AspNetCoreTestes\SharedKernel\Exceptions\NotFoundException.csutf-8=
+4D:\Dev\AspNetCoreTestes\SharedKernel\IDomainEvent.csutf-88
+/D:\Dev\AspNetCoreTestes\SharedKernel\IHandle.csutf-87
+.D:\Dev\AspNetCoreTestes\SharedKernel\Logger.csutf-8I
+@D:\Dev\AspNetCoreTestes\SharedKernel\Queries\PaginatedResults.csutf-8H
+?D:\Dev\AspNetCoreTestes\SharedKernel\Queries\PaginationInput.csutf-8?
+6D:\Dev\AspNetCoreTestes\SharedKernel\Utils\Comparer.csutf-8O
+FD:\Dev\AspNetCoreTestes\SharedKernel\Validation\FieldValidationInfo.csutf-8A
+8D:\Dev\AspNetCoreTestes\SharedKernel\Validation\Guard.csutf-8

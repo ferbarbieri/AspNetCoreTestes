@@ -11,8 +11,8 @@ namespace AspNetCoreTestes.Controllers
 {
     public class HomeController : Controller
     {
-        private IUsuarioApplicationService _userService;
-        private IPedidoApplicationService _pedidoService;
+        private readonly IUsuarioApplicationService _userService;
+        private readonly IPedidoApplicationService _pedidoService;
 
 
         public HomeController(IUsuarioApplicationService userService, IPedidoApplicationService pedidoService)
@@ -24,9 +24,7 @@ namespace AspNetCoreTestes.Controllers
         public IActionResult Index()
         {
             Logger.Log("Iniciou");
-
-            var user = _userService.ObterUsuario(1);
-
+            
             var userAdd = new Usuario ("Fernando");
 
             _userService.AdicionarUsuario(userAdd);
@@ -39,23 +37,7 @@ namespace AspNetCoreTestes.Controllers
             Logger.Log("About");
 
             ViewData["Message"] = "Your application description page.";
-
-            // Inserir um Pedido
-            /*
-            var pedido = new Pedido(
-                itens : new List<Produto>
-                {
-                    new Produto{ Id=1, Nome="Bicicleta", Preco = 1000 },
-                    new Produto{ Id=2, Nome="Monociclo", Preco = 100 }
-                },
-                cliente : new Cliente
-                {
-                    Name = "Fernand Barbieri"
-                }
-            };
-
-            _pedidoService.AdicionarPedido(pedido);
-            */
+            
             return View();
         }
 
