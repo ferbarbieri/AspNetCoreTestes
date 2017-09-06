@@ -79,6 +79,16 @@ namespace Domain.SharedKernel.Validation
             return this;
         }
 
+        public Guard ValidPassword(string field, string password)
+        {
+            if (string.IsNullOrEmpty(password) || password.Length < 8)
+                validations.Add(new FieldValidationInfo(field, "A senha deve ter ao menos 8 caracteres", false));
+            else
+                validations.Add(ValidationOK());
+
+            return this;
+        }
+
         public Guard HasMoreThanOne<T>(string field, IList<T> lista)
         {
             if(lista == null || lista.Count == 0)

@@ -1,23 +1,24 @@
-﻿using Domain.Models;
+﻿using Application.Input;
+using Domain.Models;
 using Domain.RepositoryInterfaces;
 using Domain.SharedKernel.Queries;
 using System;
 using System.Collections.Generic;
 
-namespace Application
+namespace Application.Interfaces
 {
     public interface IClienteApplicationService
     {
         Cliente Obter(int id);
         
-        void Adicionar(string nome);
+        void Adicionar(ClienteInput cliente);
 
         PaginatedResults<Cliente> ListarTodos(int paginaAtual, int totalPorPagina);
 
-        PaginatedResults<Cliente> FiltrarPorNome(string nome, int paginaAtual, int itensPorPagina);
+        PaginatedResults<Cliente> FiltrarPorNome(string nome, int paginaAtual, int totalPorPagina);
 
         void Excluir(int id);
 
-        void Atualizar(int id, string novoNome);
+        void Atualizar(int id, ClienteInput cliente);
     }
 }

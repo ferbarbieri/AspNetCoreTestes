@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Domain.SharedKernel.Queries
 {
-    public sealed class PaginatedResults<T>
+    public sealed class PaginatedResults<T> where T:class
     {
         public int TotalRecords { get; private set; }
         public int CurrentPage { get; private set; }

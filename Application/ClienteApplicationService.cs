@@ -1,4 +1,6 @@
-﻿using Domain.Events;
+﻿using Application.Input;
+using Application.Interfaces;
+using Domain.Events;
 using Domain.Models;
 using Domain.RepositoryInterfaces;
 using Domain.SharedKernel.Exceptions;
@@ -16,46 +18,55 @@ namespace Application
         {
             _repo = repo;
         }
-        
+
+        #region Queries
+
         public Cliente Obter(int id)
         {
             return ObterCliente(id);
         }
 
-        public void Adicionar(string nome)
-        {
-            var cliente = new Cliente(nome);
-            _repo.Insert(cliente);
-
-            var userEvent = new ClienteCriadoEvent(cliente);
-           
-            DomainEvents.Raise(userEvent);
-        }
-        
         public PaginatedResults<Cliente> ListarTodos(int paginaAtual, int totalPorPagina)
         {
             return _repo.GetAll(new PaginationInput(paginaAtual, totalPorPagina));
         }
 
-        public PaginatedResults<Cliente> FiltrarPorNome(string nome, int paginaAtual, int itensPorPagina)
+        public PaginatedResults<Cliente> FiltrarPorNome(string nome, int paginaAtual, int totalPorPagina)
         {
             return _repo.GetAllBy(
-                c => c.Nome.StartsWith(nome), 
-                new PaginationInput(paginaAtual, itensPorPagina)
+                c => c.Nome.StartsWith(nome),
+                new PaginationInput(paginaAtual, totalPorPagina)
                 );
         }
+
+        #endregion
+
+        #region Commands
+
+        public void Adicionar(ClienteInput cliente)
+        {
+            var c = new Cliente(cliente.Nome);
+            _repo.Insert(c);
+
+            var userEvent = new ClienteCriadoEvent(c);
+           
+            DomainEvents.Raise(userEvent);
+        }
+        
 
         public void Excluir(int id)
         {
             _repo.Delete(ObterCliente(id));
         }
 
-        public void Atualizar(int id, string novoNome)
+        public void Atualizar(int id, ClienteInput cliente)
         {
-            var cliente = ObterCliente(id);
-            cliente.UpdateInfo(novoNome);
-            _repo.Update(cliente);
+            var c = ObterCliente(id);
+            c.UpdateInfo(cliente.Nome);
+            _repo.Update(c);
         }
+
+        #endregion
 
         private Cliente ObterCliente(int id)
         {

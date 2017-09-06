@@ -25,6 +25,7 @@ using System.Reflection;
 using SharedKernel;
 using Domain.EventHandlers;
 using DependencyResolver;
+using Application.Interfaces;
 
 namespace AspNetCoreTestes
 {

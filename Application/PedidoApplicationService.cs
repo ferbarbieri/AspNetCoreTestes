@@ -1,4 +1,5 @@
-﻿using Domain.Events;
+﻿using Application.Interfaces;
+using Domain.Events;
 using Domain.Models;
 using Domain.RepositoryInterfaces;
 using SharedKernel;
@@ -14,11 +15,22 @@ namespace Application
         {
             _repo = repo;
         }
-        
+
+        #region Queries
+
         public Pedido ObterPedido(int id)
         {
             return _repo.GetById(id);
         }
+
+        public IList<Pedido> ObterPedidosPorCliente(int IdCliente)
+        {
+            return _repo.ObterPedidosPorCliente(IdCliente);
+        }
+
+        #endregion
+
+        #region Commands
 
         public void AdicionarPedido(Pedido pedido)
         {
@@ -28,9 +40,7 @@ namespace Application
             DomainEvents.Raise(PedidoEvent);
         }
 
-        public IList<Pedido> ObterPedidosPorCliente(int IdCliente)
-        {
-            return _repo.ObterPedidosPorCliente(IdCliente);
-        }
+        #endregion
+
     }
 }

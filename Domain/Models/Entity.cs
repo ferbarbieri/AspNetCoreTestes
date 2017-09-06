@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 
 namespace Domain.Models
 {
@@ -8,7 +7,6 @@ namespace Domain.Models
         /// <summary>
         /// Identificador da entidade
         /// </summary>
-        [JsonProperty(Order = -2)] // Garante que será serializado primeiro
         public int Id { get; protected set; }
 
         public bool Equals(Entity obj)

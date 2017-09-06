@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Application
+namespace Application.Interfaces
 {
     public interface IPedidoApplicationService
     {

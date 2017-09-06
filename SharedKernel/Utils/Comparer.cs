@@ -68,8 +68,7 @@ namespace Domain.SharedKernel.Utils
         /// <returns>True on success, otherwise False.</returns>
         public static int GetComparisonResult(IComparable value, IComparable valueToCompare)
         {
-            int result;
-            if (TryCompare(value, valueToCompare, out result))
+            if (TryCompare(value, valueToCompare, out int result))
             {
                 return result;
             }
@@ -83,8 +82,7 @@ namespace Domain.SharedKernel.Utils
         /// <returns>True on success, otherwise False.</returns>
         public static bool GetEqualsResult(IComparable value, IComparable valueToCompare)
         {
-            int result;
-            if (TryCompare(value, valueToCompare, out result))
+            if (TryCompare(value, valueToCompare, out int result))
             {
                 return result == 0;
             }

@@ -10,7 +10,7 @@ namespace AspNetCoreTestes.UserServices
     {
         public Usuario GetCurrentUser()
         {
-            return new Usuario("Fernando");
+            return new Usuario("Fernando", "fernando@viceri", "123456789");
         }
     }
 }

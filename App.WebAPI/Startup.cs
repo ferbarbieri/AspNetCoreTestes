@@ -9,13 +9,8 @@ using Microsoft.AspNetCore.Http;
 
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
-using SimpleInjector.Integration.AspNetCore;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Application;
 using Domain.RepositoryInterfaces;
 using Repositories;
@@ -24,31 +19,103 @@ using SharedKernel;
 using Domain.EventHandlers;
 using DependencyResolver;
 using App.WebAPI.Middleware;
-using Microsoft.AspNetCore.Diagnostics;
-using System.Net;
+
 using Infra.Repositories.Contexts;
 using Microsoft.EntityFrameworkCore;
+using Application.Interfaces;
+using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.Extensions.PlatformAbstractions;
+using System.IO;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Domain.Enums;
+using App.WebAPI.Swagger;
+using App.WebAPI.AutoMapperConfig;
 
 namespace App.WebAPI
 {
+    /// <summary>
+    /// Startup da webapi
+    /// </summary>
     public class Startup
     {
-
         private readonly Container container = ContainerFactory.Container;
 
+        private IConfigurationRoot _config;
+
+        /// <summary>
+        /// Startup
+        /// </summary>
+        /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// Objeto de configuração do ASP.NET
+        /// </summary>
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// Configuração dos serviços
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
 
+            #region Autenticação e Autorização
+
+            services.AddAuthentication((options) =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidIssuer = Configuration["Tokens:Issuer"],
+                    ValidAudience = Configuration["Tokens:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
+                };
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.Audience = Configuration["Tokens:Audience"];
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Administradores", p => p.RequireClaim("Profile", PerfilUsuario.Administradores.ToString()));
+            });
+
+            #endregion
+
             IntegrateSimpleInjector(services);
+
+            #region Swagger Doc
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Info
+                {
+                    Version = "v1",
+                    Title = "Asp Net Core Testes",
+                    Description = "Modelo de implementação DDD utilizando ASP Net Core 2.0",
+                    TermsOfService = "None",
+                    Contact = new Contact { Name = "Fernando Barbieri", Email = "fbarbieri@viceri.com.br", Url = "" }
+                });
+
+                // Usar a documentação XML dos métodos.
+                var basePath = PlatformServices.Default.Application.ApplicationBasePath;
+                var xmlPath = Path.Combine(basePath, "App.WebAPI.xml");
+                options.IncludeXmlComments(xmlPath);
+                options.OperationFilter<AuthorizationHeaderOperationFilter>();
+            });
+
+            #endregion
+
         }
 
         private void IntegrateSimpleInjector(IServiceCollection services)
@@ -66,9 +133,22 @@ namespace App.WebAPI
             services.UseSimpleInjectorAspNetRequestScoping(container);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            var builder = new ConfigurationBuilder()
+              .SetBasePath(env.ContentRootPath)
+              .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+              .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+              .AddEnvironmentVariables();
+
+            _config = builder.Build();
+
 
             #region configuração de container ioc
             InitializeContainer(app);
@@ -85,35 +165,23 @@ namespace App.WebAPI
 
             #endregion
 
-            // Aplica o MVC
-            app.UseMvc();
+            #region Swagger Middleware
 
-            /*  TRatamento padrão de erros do AspNet Core.
-             *  Estamos usando um Middleware pra isso, fica mais organizado.
-             *  
-            if (env.IsDevelopment())
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
             {
-                app.UseDeveloperExceptionPage();
-            }*/
-            /*
-            app.UseExceptionHandler(
-                 options =>
-                 {
-                     options.Run(
-                     async context =>
-                     {
-                         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                         context.Response.ContentType = "text/html";
-                         var ex = context.Features.Get<IExceptionHandlerFeature>();
-                         if (ex != null)
-                         {
-                             var err = $"<h1>Error: {ex.Error.Message}</h1>{ex.Error.StackTrace }";
-                             await context.Response.WriteAsync(err).ConfigureAwait(false);
-                         }
-                     });
-                 }
-                );
-                */
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Asp Net Core Testes API V1");
+            });
+
+            #endregion
+
+            // Aplica Autenticação
+            app.UseAuthentication();
+
+            // Aplica o MVC
+            app.UseMvcWithDefaultRoute();
         }
 
         private void InitializeContainer(IApplicationBuilder app)
@@ -122,6 +190,9 @@ namespace App.WebAPI
             container.RegisterMvcControllers(app);
             container.RegisterMvcViewComponents(app);
 
+            // Configurações
+            container.RegisterSingleton(typeof(IConfigurationRoot), _config);
+            
             // Services (Presentation)
             //container.Register<IUserService, UserService>(Lifestyle.Scoped);
 
@@ -138,14 +209,14 @@ namespace App.WebAPI
             
             //DbContexts
             //TODO: Verificar se está sendo realizado o dispose.
-            container.Register<AdminContext>(() => 
+            container.Register(() => 
             {
                 var options = new DbContextOptionsBuilder<AdminContext>();
                 options.UseSqlServer(Configuration.GetConnectionString("Meritus"));
                 return new AdminContext(options.Options);
             }, Lifestyle.Scoped);
 
-            container.Register<LojaContext>(() =>
+            container.Register(() =>
             {
                 var options = new DbContextOptionsBuilder<LojaContext>();
                 options.UseSqlServer(Configuration.GetConnectionString("Meritus"));
@@ -155,14 +226,17 @@ namespace App.WebAPI
             // Registro de todos os event handlers
             // Observação: Por questões de performance, registrar apenas uma classe por projeto
             Assembly[] assemblies = new[] {
-                 typeof(SharedKernel.IHandle<>).GetTypeInfo().Assembly // Shared Kernel
-               , typeof(Domain.EventHandlers.UsuarioCriadoEventHandler).GetTypeInfo().Assembly // Domain
+                 typeof(IHandle<>).GetTypeInfo().Assembly // Shared Kernel
+               , typeof(UsuarioCriadoEventHandler).GetTypeInfo().Assembly // Domain
                , typeof(Application.EventHandlers.EmailPedidoEnviadoHandler).GetTypeInfo().Assembly // Application
                , typeof(Repositories.EventHandlers.UserCreatedEventHandler).GetTypeInfo().Assembly // Application
             };
 
             container.RegisterCollection(typeof(IHandle<>), assemblies);
-
+            
+            // Automapper
+            container.RegisterSingleton(() => container.GetInstance<MapperProvider>().GetMapper());
+            
             // Cross-wire ASP.NET services (if any). For instance:
             container.CrossWire<ILoggerFactory>(app);
         }

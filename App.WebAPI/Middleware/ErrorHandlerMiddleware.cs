@@ -9,15 +9,18 @@ using System.Threading.Tasks;
 
 namespace App.WebAPI.Middleware
 {
+    /// <summary>
+    /// Middleware pare gerenciar erros
+    /// </summary>
     public class ErrorHandlerMiddleware
     {
-        /*private readonly RequestDelegate next;
-
-        public ErrorHandlerMiddleware(RequestDelegate next)
-        {
-            this.next = next;
-        }*/
-
+        
+        /// <summary>
+        /// Padrão de middleware
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="next"></param>
+        /// <returns></returns>
         public async Task Invoke(HttpContext context, Func<Task> next)
         {
             try
@@ -40,6 +43,7 @@ namespace App.WebAPI.Middleware
                     code = HttpStatusCode.NotFound;
                     break;
                 case FieldsValidationException fvEx:
+                case UserLoginFailedException ulfEx:
                     code = HttpStatusCode.BadRequest;
                     break;
                 default:
@@ -47,7 +51,7 @@ namespace App.WebAPI.Middleware
                     break;
             }
         
-            var result = JsonConvert.SerializeObject(new { error = exception.Message });
+            var result = JsonConvert.SerializeObject(new { Erro = exception.Message });
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;
             return context.Response.WriteAsync(result);

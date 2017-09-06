@@ -2,6 +2,7 @@
 using Domain.RepositoryInterfaces;
 using Infra.Repositories.Contexts;
 using System;
+using System.Linq;
 
 namespace Repositories
 {
@@ -9,6 +10,11 @@ namespace Repositories
     {
         public UsuarioRepository(AdminContext context) : base(context)
         {
+        }
+
+        public Usuario GetByEmail(string email)
+        {
+            return DbSet.FirstOrDefault(u => u.Email == email);
         }
     }
 }

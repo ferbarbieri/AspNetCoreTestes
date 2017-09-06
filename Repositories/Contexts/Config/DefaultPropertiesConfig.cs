@@ -16,13 +16,14 @@ namespace Infra.Repositories.Contexts.Config
         {
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
+                //TODO: Verificar se é Entity
                 modelBuilder.Entity(entityType.Name).Property<DateTime>("LastModified");
                 modelBuilder.Entity(entityType.Name).Property<bool>("IsDeleted");
             }
             return modelBuilder;
         }
 
-        internal static EntityTypeBuilder AddIsDeletedFilter<T>(this EntityTypeBuilder<T> entityTypeBuilder) where T:Entity
+        internal static EntityTypeBuilder<T> AddIsDeletedFilter<T>(this EntityTypeBuilder<T> entityTypeBuilder) where T:Entity
         {
             entityTypeBuilder.HasQueryFilter(c => !EF.Property<bool>(c, "IsDeleted"));
             return entityTypeBuilder;

@@ -52,7 +52,6 @@ namespace Repositories
 
         public PaginatedResults<TEntity> GetAll(PaginationInput paginationInput)
         {
-            // TODO: Ver melhor jeito de fazer isso sem repetir
             var count = DbSet.Count();
 
             var results = DbSet.AsNoTracking()
@@ -66,6 +65,7 @@ namespace Repositories
                 currentPage: paginationInput.CurrentPage,
                 recordsPerPage: paginationInput.RecordsPerPage);
         }
+
         
         public virtual void Insert(TEntity entity)
         {

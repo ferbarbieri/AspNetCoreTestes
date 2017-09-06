@@ -31,7 +31,9 @@ namespace Infra.Repositories.Contexts
                 {
                     entity
                     .ToTable("Usuario")
-                    .AddIsDeletedFilter();
+                    .AddIsDeletedFilter()
+                    .HasIndex(c => c.Email).IsUnique();
+                    
                 });
 
             // Adiciona também as propriedades padrão para todas as entidades

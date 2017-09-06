@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using SharedKernel;
 using Application;
 using Domain.Models;
+using Application.Interfaces;
+using Application.Input;
 
 namespace AspNetCoreTestes.Controllers
 {
@@ -25,10 +27,6 @@ namespace AspNetCoreTestes.Controllers
         {
             Logger.Log("Iniciou");
             
-            var userAdd = new Usuario ("Fernando");
-
-            _userService.AdicionarUsuario(userAdd);
-
             return View();
         }
 
