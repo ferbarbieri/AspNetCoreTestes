@@ -6,8 +6,6 @@ using Domain.RepositoryInterfaces;
 using Domain.SharedKernel.Exceptions;
 using Domain.SharedKernel.Queries;
 using SharedKernel;
-using System;
-using System.Collections.Generic;
 
 namespace Application
 {

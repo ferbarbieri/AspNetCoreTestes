@@ -1,7 +1,4 @@
 ﻿using Domain.Models;
-using Domain.RepositoryInterfaces;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Application.Interfaces

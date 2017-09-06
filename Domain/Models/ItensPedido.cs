@@ -1,7 +1,4 @@
 ﻿using Domain.SharedKernel.Validation;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Domain.Models
 {

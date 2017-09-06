@@ -1,9 +1,5 @@
 ﻿using Domain.Events;
-using Domain.RepositoryInterfaces;
 using SharedKernel;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Application.EventHandlers
 {

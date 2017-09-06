@@ -1,11 +1,6 @@
 ﻿using Domain.Models;
 using Infra.Repositories.Contexts.Config;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 
 namespace Infra.Repositories.Contexts
 {

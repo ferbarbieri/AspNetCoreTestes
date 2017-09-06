@@ -9,7 +9,6 @@ using Domain.SharedKernel.Exceptions;
 using Domain.SharedKernel.Queries;
 using Domain.SharedKernel.Utils;
 using SharedKernel;
-using System;
 
 namespace Application
 {

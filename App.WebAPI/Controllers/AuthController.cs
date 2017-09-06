@@ -9,11 +9,9 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace App.WebAPI.Controllers
 {
-
     /// <summary>
     /// Controller de Autenticação
     /// </summary>

@@ -9,13 +9,7 @@ using Microsoft.AspNetCore.Http;
 
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
-using SimpleInjector.Integration.AspNetCore;
 using SimpleInjector.Integration.AspNetCore.Mvc;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AspNetCoreTestes.UserServices;
 using AspNetCoreTestes.Middleware;
 using Application;
@@ -23,7 +17,6 @@ using Domain.RepositoryInterfaces;
 using Repositories;
 using System.Reflection;
 using SharedKernel;
-using Domain.EventHandlers;
 using DependencyResolver;
 using Application.Interfaces;
 

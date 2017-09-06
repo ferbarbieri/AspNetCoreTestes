@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SharedKernel
+﻿namespace SharedKernel
 {
 
     public interface IDomainEvent

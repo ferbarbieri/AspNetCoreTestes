@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Domain.SharedKernel.Validation
+﻿namespace Domain.SharedKernel.Validation
 {
     public class FieldValidationInfo
     {

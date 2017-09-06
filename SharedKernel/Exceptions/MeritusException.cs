@@ -1,8 +1,6 @@
 ﻿using SharedKernel;
 using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace Domain.SharedKernel.Exceptions
 {

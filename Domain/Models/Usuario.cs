@@ -3,8 +3,6 @@ using Domain.Events;
 using Domain.SharedKernel.Utils;
 using Domain.SharedKernel.Validation;
 using SharedKernel;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Domain.Models
 {

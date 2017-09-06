@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Application;
-using Domain.SharedKernel.Queries;
 using Domain.Models;
 using Application.Interfaces;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Net;
 using Application.Input;
 using Microsoft.AspNetCore.Authorization;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace App.WebAPI.Controllers
 {
@@ -21,7 +12,7 @@ namespace App.WebAPI.Controllers
     /// </summary>
     [Authorize(Policy = "Administradores")]
     [Route("api/[controller]")]
-    public class UsuariosController : Controller
+    public class UsuariosController : BaseController
     {
         private IUsuarioApplicationService _appService { get; }
 

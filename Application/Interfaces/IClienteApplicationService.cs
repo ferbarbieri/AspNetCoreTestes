@@ -1,9 +1,6 @@
 ﻿using Application.Input;
 using Domain.Models;
-using Domain.RepositoryInterfaces;
 using Domain.SharedKernel.Queries;
-using System;
-using System.Collections.Generic;
 
 namespace Application.Interfaces
 {

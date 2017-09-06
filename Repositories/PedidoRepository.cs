@@ -1,7 +1,6 @@
 ﻿using Domain.Models;
 using Domain.RepositoryInterfaces;
 using Infra.Repositories.Contexts;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

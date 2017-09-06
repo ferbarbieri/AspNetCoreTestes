@@ -3,7 +3,6 @@ using Domain.Events;
 using Domain.Models;
 using Domain.RepositoryInterfaces;
 using SharedKernel;
-using System;
 using System.Collections.Generic;
 
 namespace Application

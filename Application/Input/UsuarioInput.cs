@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Application.Input
+﻿namespace Application.Input
 {
     /// <summary>
     /// Input para as operações com Usuarios
