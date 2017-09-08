@@ -1,1 +1,0 @@
-D:\Dev\AspNetCoreTestes\.sonarqube\out\\App.WebAPI_6730

@@ -20,17 +20,17 @@ namespace App.WebAPI.Controllers
     [Route("api/Auth")]
     public class AuthController : Controller
     {
-        private IUsuarioApplicationService _userService;
+        private ILoginApplicationService _loginService;
         private IConfigurationRoot _config;
 
         /// <summary>
         /// Construtor
         /// </summary>
-        /// <param name="userService">Serviço de Usuario</param>
+        /// <param name="loginService">Serviço de Usuario</param>
         /// <param name="config">Configurações (settings.json)</param>
-        public AuthController(IUsuarioApplicationService userService, IConfigurationRoot config)
+        public AuthController(ILoginApplicationService loginService, IConfigurationRoot config)
         {
-            _userService = userService;
+            _loginService = loginService;
             _config = config;
 
         }
@@ -48,8 +48,8 @@ namespace App.WebAPI.Controllers
         {
             if (login == null)
                 return BadRequest("Credenciais não informadas");
-
-            var user = _userService.Login(login.Email, login.Senha);
+            
+            var user = _loginService.Login(login.Email, login.Senha);
 
             if(user != null)
             {

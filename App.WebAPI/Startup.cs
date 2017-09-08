@@ -32,6 +32,8 @@ using System.Text;
 using Domain.Enums;
 using App.WebAPI.Swagger;
 using App.WebAPI.AutoMapperConfig;
+using System.Security.Claims;
+using System.Linq;
 
 namespace App.WebAPI
 {
@@ -151,6 +153,7 @@ namespace App.WebAPI
 
 
             #region configuração de container ioc
+
             InitializeContainer(app);
 
             // Registro dos middlewares
@@ -159,17 +162,17 @@ namespace App.WebAPI
 
             container.Verify();
 
+            #endregion
+
             // Aplica os middlewares
             app.Use((c, next) => container.GetInstance<ApiRequestMiddleware>().Invoke(c, next));
             app.Use((c, next) => container.GetInstance<ErrorHandlerMiddleware>().Invoke(c, next));
 
-            #endregion
 
             #region Swagger Middleware
 
             app.UseSwagger();
 
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Asp Net Core Testes API V1");
@@ -192,46 +195,53 @@ namespace App.WebAPI
 
             // Configurações
             container.RegisterSingleton(typeof(IConfigurationRoot), _config);
+            container.RegisterSingleton<IHttpContextAccessor, HttpContextAccessor>();
             
             // Services (Presentation)
-            //container.Register<IUserService, UserService>(Lifestyle.Scoped);
-
-            // Registro das interfaces do sistema:
             container.Register<IUsuarioApplicationService, UsuarioApplicationService>(Lifestyle.Scoped);
             container.Register<IPedidoApplicationService, PedidoApplicationService>(Lifestyle.Scoped);
             container.Register<IClienteApplicationService, ClienteApplicationService>(Lifestyle.Scoped);
-            
+            container.Register<ILoginApplicationService, LoginApplicationService>(Lifestyle.Scoped);
+
+
             // Repositories
             container.Register<IUsuarioRepository, UsuarioRepository>(Lifestyle.Scoped);
             container.Register<IPedidoRepository, PedidoRepository>(Lifestyle.Scoped);
             container.Register<IProdutoRepository, ProdutoRepository>(Lifestyle.Scoped);
             container.Register<IClienteRepository, ClienteRepository>(Lifestyle.Scoped);
+            container.Register<ITenantRepository, TenantRepository>(Lifestyle.Scoped);
             
             //DbContexts
             //TODO: Verificar se está sendo realizado o dispose.
             container.Register(() => 
             {
                 var options = new DbContextOptionsBuilder<AdminContext>();
-                options.UseSqlServer(Configuration.GetConnectionString("Meritus"));
+                options.UseSqlServer(GetDatabaseForUser());
                 return new AdminContext(options.Options);
             }, Lifestyle.Scoped);
 
             container.Register(() =>
             {
                 var options = new DbContextOptionsBuilder<LojaContext>();
-                options.UseSqlServer(Configuration.GetConnectionString("Meritus"));
+                options.UseSqlServer(GetDatabaseForUser());
                 return new LojaContext(options.Options);
             }, Lifestyle.Scoped);
-            
+
+            container.Register(() =>
+            {
+                var options = new DbContextOptionsBuilder<TenantManagementContext>();
+                options.UseSqlServer(Configuration.GetConnectionString("Meritus"));
+                return new TenantManagementContext(options.Options);
+            }, Lifestyle.Scoped);
+
             // Registro de todos os event handlers
             // Observação: Por questões de performance, registrar apenas uma classe por projeto
             Assembly[] assemblies = new[] {
                  typeof(IHandle<>).GetTypeInfo().Assembly // Shared Kernel
                , typeof(UsuarioCriadoEventHandler).GetTypeInfo().Assembly // Domain
                , typeof(Application.EventHandlers.EmailPedidoEnviadoHandler).GetTypeInfo().Assembly // Application
-               , typeof(Repositories.EventHandlers.UserCreatedEventHandler).GetTypeInfo().Assembly // Application
+               , typeof(Repositories.EventHandlers.UserCreatedEventHandler).GetTypeInfo().Assembly // Repositories
             };
-
             container.RegisterCollection(typeof(IHandle<>), assemblies);
             
             // Automapper
@@ -239,6 +249,42 @@ namespace App.WebAPI
             
             // Cross-wire ASP.NET services (if any). For instance:
             container.CrossWire<ILoggerFactory>(app);
+        }
+
+        private string GetDatabaseForUser()
+        {
+            var tenant = ObterTenantUsuario();
+            if (tenant != null)
+            {
+                var cnn = Configuration.GetConnectionString("Tenant");
+                return cnn.Replace("{tenant}", tenant);
+            }
+            return Configuration.GetConnectionString("Meritus");
+        }
+
+        /// <summary>
+        /// Retorna o dominio do email do usuario logado.
+        /// OBS: Esse modelo de obter os dados de tenant não me parece adequado. 
+        /// Estudar se deve usar outro modelo ou potenciais problemas com isso.
+        /// </summary>
+        /// <returns></returns>
+        private string ObterTenantUsuario()
+        {
+            var httpContext = container.GetInstance<IHttpContextAccessor>();
+
+            if (httpContext.HttpContext == null
+                || httpContext.HttpContext.User == null
+                || httpContext.HttpContext.User.Identity == null)
+                return null;
+            
+            if (httpContext.HttpContext.User.Identity is ClaimsIdentity identity)
+            {
+                var claims = identity.Claims.ToList();
+                var claim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+                return claim?.Value.Split('@')[1];
+            }
+
+            return null;
         }
     }
 }

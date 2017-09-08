@@ -7,7 +7,7 @@ using Domain.Models;
 using Domain.RepositoryInterfaces;
 using Domain.SharedKernel.Exceptions;
 using Domain.SharedKernel.Queries;
-using Domain.SharedKernel.Utils;
+using Microsoft.Extensions.Configuration;
 using SharedKernel;
 
 namespace Application
@@ -17,13 +17,16 @@ namespace Application
         private IUsuarioRepository _repo { get; }
 
         private IMapper _mapper;
+        private IConfigurationRoot _config;
 
         public UsuarioApplicationService(
             IUsuarioRepository repo,
-            IMapper mapper)
+            IMapper mapper,
+            IConfigurationRoot config)
         {
             _repo = repo;
             _mapper = mapper;
+            _config = config;
         }
 
         #region Queries
@@ -64,20 +67,7 @@ namespace Application
 
             DomainEvents.Raise(userEvent);
         }
-
-        public Usuario Login(string email, string password)
-        {
-            var user = _repo.GetByEmail(email);
-
-            // veririfica se a senha está ok
-            if (user != null && PasswordHasher.Verify(password, user.Senha))
-            {
-                return user;
-            }
-
-            return null;
-        }
-
+        
         public void Excluir(int id)
         {
             _repo.Delete(ObterUsuario(id));

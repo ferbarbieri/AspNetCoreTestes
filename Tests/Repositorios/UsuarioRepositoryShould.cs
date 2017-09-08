@@ -10,7 +10,7 @@ namespace Tests.Repositorios
     public class UsuarioRepositoryShould
     {
 
-        [Fact(Skip = "Ajustar o IHandle")]
+        [Fact(Skip ="Não funciona DomainEvents")]
         [Trait("Integration", "")]
         [Trait("Repositorios", "")]
         public void CriarObterAtualizarExcluirUsuario()

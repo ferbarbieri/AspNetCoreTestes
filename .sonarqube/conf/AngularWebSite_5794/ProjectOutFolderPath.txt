@@ -1,1 +1,0 @@
-D:\Dev\AspNetCoreTestes\.sonarqube\out\\AngularWebSite_5794

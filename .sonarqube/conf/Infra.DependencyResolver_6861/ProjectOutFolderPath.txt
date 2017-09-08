@@ -1,1 +1,0 @@
-D:\Dev\AspNetCoreTestes\.sonarqube\out\\Infra.DependencyResolver_6861
