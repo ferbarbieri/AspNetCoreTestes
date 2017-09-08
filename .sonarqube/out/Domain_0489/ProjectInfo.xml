@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/integration/2015/1">
+  <ProjectName>Domain</ProjectName>
+  <ProjectLanguage>C#</ProjectLanguage>
+  <ProjectType>Product</ProjectType>
+  <ProjectGuid>9ba74065-4181-49b7-8cb1-c1145e7b545d</ProjectGuid>
+  <FullPath>D:\Dev\AspNetCoreTestes\Domain\Domain.csproj</FullPath>
+  <IsExcluded>false</IsExcluded>
+  <AnalysisResults>
+    <AnalysisResult Id="FilesToAnalyze" Location="D:\Dev\AspNetCoreTestes\.sonarqube\out\\Domain_0489\FilesToAnalyze.txt" />
+  </AnalysisResults>
+  <AnalysisSettings>
+    <Property Name="sonar.cs.roslyn.reportFilePath">D:\Dev\AspNetCoreTestes\Domain\bin\Debug\netcoreapp2.0\Domain.dll.RoslynCA.json</Property>
+    <Property Name="sonar.cs.analyzer.projectOutPath">D:\Dev\AspNetCoreTestes\.sonarqube\out\\Domain_0489</Property>
+    <Property Name="sonar.stylecop.projectFilePath">D:\Dev\AspNetCoreTestes\Domain\Domain.csproj</Property>
+  </AnalysisSettings>
+</ProjectInfo>

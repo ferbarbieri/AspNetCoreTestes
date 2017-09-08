@@ -1,0 +1,12 @@
+N
+ED:\Dev\AspNetCoreTestes\App.WebAPI\AutoMapperConfig\MapperProvider.csutf-8I
+@D:\Dev\AspNetCoreTestes\App.WebAPI\Controllers\AuthController.csutf-8I
+@D:\Dev\AspNetCoreTestes\App.WebAPI\Controllers\BaseController.csutf-8M
+DD:\Dev\AspNetCoreTestes\App.WebAPI\Controllers\ClientesController.csutf-8M
+DD:\Dev\AspNetCoreTestes\App.WebAPI\Controllers\UsuariosController.csutf-8N
+ED:\Dev\AspNetCoreTestes\App.WebAPI\Middleware\ApiRequestMiddleware.csutf-8P
+GD:\Dev\AspNetCoreTestes\App.WebAPI\Middleware\ErrorHandlerMiddleware.csutf-86
+-D:\Dev\AspNetCoreTestes\App.WebAPI\Program.csutf-86
+-D:\Dev\AspNetCoreTestes\App.WebAPI\Startup.csutf-8Y
+PD:\Dev\AspNetCoreTestes\App.WebAPI\Swagger\AuthorizationHeaderOperationFilter.csutf-8H
+?D:\Dev\AspNetCoreTestes\App.WebAPI\ViewModels\LoginViewModel.csutf-8

@@ -3,5 +3,5 @@ projectKey=AspNetCoreTestes
 serverUrl=https://sonarcloud.io
 serverVersion=6.5.0.27571
 dashboardUrl=https://sonarcloud.io/dashboard/index/AspNetCoreTestes
-ceTaskId=AV5As2oCzsTf1U4IR9zt
-ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AV5As2oCzsTf1U4IR9zt
+ceTaskId=AV5fin7h-ycAxoR9jWvZ
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AV5fin7h-ycAxoR9jWvZ

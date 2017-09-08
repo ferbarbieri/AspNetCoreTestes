@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/integration/2015/1">
+  <ProjectName>App.IdentityServer</ProjectName>
+  <ProjectLanguage>C#</ProjectLanguage>
+  <ProjectType>Product</ProjectType>
+  <ProjectGuid>104b663a-a141-4d5d-95ba-7d5ee17e547a</ProjectGuid>
+  <FullPath>D:\Dev\AspNetCoreTestes\App.IdentityServer\App.IdentityServer.csproj</FullPath>
+  <IsExcluded>false</IsExcluded>
+  <AnalysisResults>
+    <AnalysisResult Id="FilesToAnalyze" Location="D:\Dev\AspNetCoreTestes\.sonarqube\out\\App.IdentityServer_7657\FilesToAnalyze.txt" />
+  </AnalysisResults>
+  <AnalysisSettings>
+    <Property Name="sonar.cs.roslyn.reportFilePath">D:\Dev\AspNetCoreTestes\App.IdentityServer\bin\Debug\netcoreapp2.0\App.IdentityServer.dll.RoslynCA.json</Property>
+    <Property Name="sonar.cs.analyzer.projectOutPath">D:\Dev\AspNetCoreTestes\.sonarqube\out\\App.IdentityServer_7657</Property>
+    <Property Name="sonar.stylecop.projectFilePath">D:\Dev\AspNetCoreTestes\App.IdentityServer\App.IdentityServer.csproj</Property>
+  </AnalysisSettings>
+</ProjectInfo>

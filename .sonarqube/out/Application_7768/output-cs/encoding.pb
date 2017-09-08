@@ -1,0 +1,14 @@
+I
+@D:\Dev\AspNetCoreTestes\Application\ClienteApplicationService.csutf-8W
+ND:\Dev\AspNetCoreTestes\Application\EventHandlers\EmailPedidoEnviadoHandler.csutf-8B
+9D:\Dev\AspNetCoreTestes\Application\Input\ClienteInput.csutf-8B
+9D:\Dev\AspNetCoreTestes\Application\Input\UsuarioInput.csutf-8U
+LD:\Dev\AspNetCoreTestes\Application\Interfaces\IClienteApplicationService.csutf-8S
+JD:\Dev\AspNetCoreTestes\Application\Interfaces\ILoginApplicationService.csutf-8T
+KD:\Dev\AspNetCoreTestes\Application\Interfaces\IPedidoApplicationService.csutf-8U
+LD:\Dev\AspNetCoreTestes\Application\Interfaces\IUsuarioApplicationService.csutf-8G
+>D:\Dev\AspNetCoreTestes\Application\LoginApplicationService.csutf-8R
+ID:\Dev\AspNetCoreTestes\Application\Mappings\ApplicationMappingProfile.csutf-8H
+?D:\Dev\AspNetCoreTestes\Application\PedidoApplicationService.csutf-8I
+@D:\Dev\AspNetCoreTestes\Application\UsuarioApplicationService.csutf-8K
+BD:\Dev\AspNetCoreTestes\Application\ViewModels\UsuarioViewModel.csutf-8
