@@ -9,6 +9,7 @@ using Domain.SharedKernel.Exceptions;
 using Domain.SharedKernel.Queries;
 using Microsoft.Extensions.Configuration;
 using SharedKernel;
+using System.Threading.Tasks;
 
 namespace Application
 {
@@ -31,60 +32,59 @@ namespace Application
 
         #region Queries
 
-        public PaginatedResults<Usuario> ListarTodos(int paginaAtual, int totalPorPagina)
+        public Task<PaginatedResults<Usuario>> ListarTodos(int paginaAtual, int totalPorPagina)
         {
             return _repo.GetAll(new PaginationInput(paginaAtual, totalPorPagina));
         }
 
-        public PaginatedResults<Usuario> FiltrarPorNome(string nome, int paginaAtual, int totalPorPagina)
+        public Task<PaginatedResults<Usuario>> FiltrarPorNome(string nome, int paginaAtual, int totalPorPagina)
         {
             return _repo.GetAllBy(
                 c=>c.Nome.StartsWith(nome),
                 new PaginationInput(paginaAtual, totalPorPagina));
         }
-
-
-        public UsuarioViewModel Obter(int id)
+        
+        public async Task<UsuarioViewModel> Obter(int id)
         {
-            return _mapper.Map<UsuarioViewModel>(ObterUsuario(id));
+            return _mapper.Map<UsuarioViewModel>(await ObterUsuario(id));
         }
 
         #endregion
 
         #region Commands
 
-        public void Adicionar(UsuarioInput input)
+        public async Task Adicionar(UsuarioInput input)
         {
-            if(_repo.GetByEmail(input.Email) != null)
+            if(await _repo.GetByEmail(input.Email) != null)
             {
                 throw new FieldsValidationException("O Email informado já existe.");
             }
 
             var usuario = new Usuario(input.Nome, input.Email, input.Senha);
-            _repo.Insert(usuario);
+            await _repo.Insert(usuario);
 
             var userEvent = new UsuarioCriadoEvent(usuario);
 
             DomainEvents.Raise(userEvent);
         }
         
-        public void Excluir(int id)
+        public async Task Excluir(int id)
         {
-            _repo.Delete(ObterUsuario(id));
+            await _repo.Delete(await ObterUsuario(id));
         }
 
-        public void Atualizar(int id, UsuarioInput input)
+        public async Task Atualizar(int id, UsuarioInput input)
         {
-            var usuario = ObterUsuario(id);
+            var usuario = await ObterUsuario(id);
             usuario.UpdateInfo(input.Nome, input.Email, input.Senha);
-            _repo.Update(usuario);
+            await _repo.Update(usuario);
         }
 
         #endregion
         
-        private Usuario ObterUsuario(int id)
+        private async Task<Usuario> ObterUsuario(int id)
         {
-            var usuario = _repo.GetById(id);
+            var usuario = await _repo.GetById(id);
             if (usuario == null)
                 throw new NotFoundException("Usuario não encontrado", id);
 

@@ -2,11 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Domain.RepositoryInterfaces
 {
     public interface ITenantRepository : IRepository<Tenant>
     {
-        Tenant ObterPeloDominio(string dominio);
+        Task<Tenant> ObterPeloDominio(string dominio);
     }
 }

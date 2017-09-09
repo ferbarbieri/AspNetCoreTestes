@@ -1,21 +1,22 @@
 ﻿using Application.Input;
 using Domain.Models;
 using Domain.SharedKernel.Queries;
+using System.Threading.Tasks;
 
 namespace Application.Interfaces
 {
     public interface IClienteApplicationService
     {
-        Cliente Obter(int id);
+        Task<Cliente> Obter(int id);
         
-        void Adicionar(ClienteInput cliente);
+        Task Adicionar(ClienteInput cliente);
 
-        PaginatedResults<Cliente> ListarTodos(int paginaAtual, int totalPorPagina);
+        Task<PaginatedResults<Cliente>> ListarTodos(int paginaAtual, int totalPorPagina);
 
-        PaginatedResults<Cliente> FiltrarPorNome(string nome, int paginaAtual, int totalPorPagina);
+        Task<PaginatedResults<Cliente>> FiltrarPorNome(string nome, int paginaAtual, int totalPorPagina);
 
-        void Excluir(int id);
+        Task Excluir(int id);
 
-        void Atualizar(int id, ClienteInput cliente);
+        Task Atualizar(int id, ClienteInput cliente);
     }
 }

@@ -1,9 +1,10 @@
 ﻿using Domain.Models;
+using System.Threading.Tasks;
 
 namespace Domain.RepositoryInterfaces
 {
     public interface IUsuarioRepository : IRepository<Usuario>
     {
-        Usuario GetByEmail(string email);
+        Task<Usuario> GetByEmail(string email);
     }
 }

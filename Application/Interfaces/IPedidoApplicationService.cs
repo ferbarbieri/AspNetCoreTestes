@@ -1,15 +1,16 @@
 ﻿using Domain.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Application.Interfaces
 {
     public interface IPedidoApplicationService
     {
 
-        Pedido ObterPedido(int id);
+        Task<Pedido> ObterPedido(int id);
         
-        void AdicionarPedido(Pedido pedido);
+        Task AdicionarPedido(Pedido pedido);
 
-        IList<Pedido> ObterPedidosPorCliente(int IdCliente);
+        Task<IList<Pedido>> ObterPedidosPorCliente(int IdCliente);
     }
 }

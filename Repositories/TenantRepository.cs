@@ -1,7 +1,9 @@
 ﻿using Domain.Models;
 using Domain.RepositoryInterfaces;
 using Infra.Repositories.Contexts;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Repositories
 {
@@ -11,9 +13,9 @@ namespace Repositories
         {
         }
 
-        public Tenant ObterPeloDominio(string dominio)
+        public Task<Tenant> ObterPeloDominio(string dominio)
         {
-            return DbSet.FirstOrDefault(c => c.Dominio == dominio);
+            return DbSet.FirstOrDefaultAsync(c => c.Dominio == dominio);
         }
     }
 }

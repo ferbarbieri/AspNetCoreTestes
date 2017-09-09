@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Domain.SharedKernel.Queries;
+using System.Threading.Tasks;
 
 namespace Repositories
 {
@@ -22,26 +23,26 @@ namespace Repositories
             DbSet = Db.Set<TEntity>();
         }
        
-        public virtual TEntity GetById(int id)
+        public virtual Task<TEntity> GetById(int id)
         {
             return DbSet.AsNoTracking()
-                .FirstOrDefault(c => c.Id == id);
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
-        public IList<TEntity> GetAllBy(Expression<Func<TEntity, bool>> predicate)
+        public Task<List<TEntity>> GetAllBy(Expression<Func<TEntity, bool>> predicate)
         {
             return DbSet.AsNoTracking()
-                .Where(predicate).ToList();
+                .Where(predicate).ToListAsync();
         }
 
-        public PaginatedResults<TEntity> GetAllBy(Expression<Func<TEntity, bool>> predicate, PaginationInput paginationInput)
+        public async Task<PaginatedResults<TEntity>> GetAllBy(Expression<Func<TEntity, bool>> predicate, PaginationInput paginationInput)
         {
             var count = DbSet.Where(predicate).Count();
 
-            var results = DbSet.AsNoTracking()
+            var results = await DbSet.AsNoTracking()
                 .Where(predicate)
                 .Skip(paginationInput.RecordsToSkip)
                 .Take(paginationInput.RecordsPerPage)
-                .ToList();
+                .ToListAsync();
 
             return new PaginatedResults<TEntity>(
                 results: results, 
@@ -50,14 +51,14 @@ namespace Repositories
                 recordsPerPage: paginationInput.RecordsPerPage);
         }
 
-        public PaginatedResults<TEntity> GetAll(PaginationInput paginationInput)
+        public async Task<PaginatedResults<TEntity>> GetAll(PaginationInput paginationInput)
         {
             var count = DbSet.Count();
 
-            var results = DbSet.AsNoTracking()
+            var results = await DbSet.AsNoTracking()
                 .Skip(paginationInput.RecordsToSkip)
                 .Take(paginationInput.RecordsPerPage)
-                .ToList();
+                .ToListAsync();
 
             return new PaginatedResults<TEntity>(
                 results: results,
@@ -67,22 +68,22 @@ namespace Repositories
         }
 
         
-        public virtual void Insert(TEntity entity)
+        public virtual Task Insert(TEntity entity)
         {
             DbSet.Add(entity);
-            Db.SaveChanges();
+            return Db.SaveChangesAsync();
         }
 
-        public virtual void Update(TEntity entity)
+        public virtual Task Update(TEntity entity)
         {
             DbSet.Update(entity);
-            Db.SaveChanges();
+            return Db.SaveChangesAsync();
         }
 
-        public virtual void Delete(TEntity entity)
+        public virtual Task Delete(TEntity entity)
         {
             DbSet.Remove(entity);
-            Db.SaveChanges();
+            return Db.SaveChangesAsync();
         }
         
         public void Dispose()

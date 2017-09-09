@@ -13,18 +13,18 @@ namespace Tests.Repositorios
         [Fact(Skip ="Não funciona DomainEvents")]
         [Trait("Integration", "")]
         [Trait("Repositorios", "")]
-        public void CriarObterAtualizarExcluirUsuario()
+        public async void CriarObterAtualizarExcluirUsuario()
         {
             // O certo é ter um teste por método!
             using (var context = new AdminContext(ContextOptions<AdminContext>.GetOptions()))
             {
                 var repo = new UsuarioRepository(context);
                 var usuario = new Usuario("Fernando", $"fernando_{DateTime.Now.Millisecond}_{DateTime.Now.Second}@viceri.com.br", "12345678");
-                repo.Insert(usuario);
+                await repo.Insert(usuario);
 
                 Assert.NotEqual(default(int), usuario.Id);
 
-                var usuarioObter = repo.GetById(usuario.Id);
+                var usuarioObter = await repo.GetById(usuario.Id);
 
                 Assert.Equal("Fernando", usuarioObter.Nome);
 
@@ -32,15 +32,17 @@ namespace Tests.Repositorios
 
                 usuario.PromoverParaAdministrador();
 
-                repo.Update(usuario);
-                
-                var usuarioAtualizado = repo.GetAllBy(c => c.Nome.StartsWith("Barb")).FirstOrDefault();
+                await repo.Update(usuario);
+
+                var lista = await repo.GetAllBy(c => c.Nome.StartsWith("Barb"));
+
+                var usuarioAtualizado = lista.FirstOrDefault();
 
                 Assert.NotNull(usuarioAtualizado.Nome);
 
                 Assert.Equal("Barbieri", usuarioAtualizado.Nome);
                 
-                repo.Delete(usuario);
+                await repo.Delete(usuario);
 
                 var usuarioExcluido = repo.GetById(usuario.Id);
 

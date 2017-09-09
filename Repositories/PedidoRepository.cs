@@ -1,8 +1,10 @@
 ﻿using Domain.Models;
 using Domain.RepositoryInterfaces;
 using Infra.Repositories.Contexts;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Repositories
 {
@@ -12,9 +14,9 @@ namespace Repositories
         {
         }
 
-        public IList<Pedido> ObterPedidosPorCliente(int idCliente)
+        public Task<List<Pedido>> ObterPedidosPorCliente(int idCliente)
         {
-            return DbSet.Where(p => p.Cliente.Id == idCliente).ToList();
+            return DbSet.Where(p => p.Cliente.Id == idCliente).ToListAsync();
         }
     }
 }

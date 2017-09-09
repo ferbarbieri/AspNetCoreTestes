@@ -9,6 +9,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace App.WebAPI.Controllers
 {
@@ -44,12 +45,12 @@ namespace App.WebAPI.Controllers
         [AllowAnonymous]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public IActionResult Login([FromBody] LoginViewModel login)
+        public async Task<IActionResult> Login([FromBody] LoginViewModel login)
         {
             if (login == null)
                 return BadRequest("Credenciais não informadas");
             
-            var user = _loginService.Login(login.Email, login.Senha);
+            var user = await _loginService.Login(login.Email, login.Senha);
 
             if(user != null)
             {

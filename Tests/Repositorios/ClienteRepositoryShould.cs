@@ -12,32 +12,34 @@ namespace Tests.Repositorios
         [Fact]
         [Trait("Integration", "")]
         [Trait("Repositorios", "")]
-        public void CriarObterAtualizarExcluirCliente()
+        public async void CriarObterAtualizarExcluirCliente()
         {
             // O certo é ter um teste por método!
             using (var context = new LojaContext(ContextOptions<LojaContext>.GetOptions()))
             {
                 var repo = new ClienteRepository(context);
                 var cliente = new Cliente("Fernando");
-                repo.Insert(cliente);
+                await repo.Insert(cliente);
 
                 Assert.NotEqual(default(int), cliente.Id);
 
-                var clienteObter = repo.GetById(cliente.Id);
+                var clienteObter = await repo.GetById(cliente.Id);
 
                 Assert.Equal("Fernando", clienteObter.Nome);
 
                 cliente.UpdateInfo("Barbieri");
 
-                repo.Update(cliente);
+                await repo.Update(cliente);
 
-                var clienteAtualizado = repo.GetAllBy(c => c.Nome.StartsWith("Barb")).FirstOrDefault();
+                var lista = await repo.GetAllBy(c => c.Nome.StartsWith("Barb"));
+
+                var clienteAtualizado = lista.FirstOrDefault();
 
                 Assert.NotNull(clienteAtualizado.Nome);
 
                 Assert.Equal("Barbieri", clienteAtualizado.Nome);
                 
-                repo.Delete(cliente);
+                await repo.Delete(cliente);
 
                 var clienteExcluido = repo.GetById(cliente.Id);
 

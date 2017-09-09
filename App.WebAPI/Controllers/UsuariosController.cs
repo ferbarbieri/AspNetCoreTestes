@@ -4,6 +4,7 @@ using Domain.Models;
 using Application.Interfaces;
 using Application.Input;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 
 namespace App.WebAPI.Controllers
 {
@@ -33,9 +34,9 @@ namespace App.WebAPI.Controllers
         /// <returns><see cref="IList{Usuario}"/></returns>
         [HttpGet]
         [ProducesResponseType(typeof(IList<Usuario>), 200)]
-        public IActionResult Get(int pagina, int porPagina)
+        public async Task<IActionResult> Get(int pagina, int porPagina)
         {
-            return Ok(_appService.ListarTodos(pagina, porPagina));
+            return Ok(await _appService.ListarTodos(pagina, porPagina));
         }
 
         /// <summary>
@@ -46,9 +47,9 @@ namespace App.WebAPI.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Usuario), 200)]
         [ProducesResponseType(404)]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return Ok(_appService.Obter(id));
+            return Ok(await _appService.Obter(id));
         }
 
         /// <summary>
@@ -59,9 +60,9 @@ namespace App.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Usuario), 200)]
         [ProducesResponseType(400)]
-        public IActionResult Post([FromBody] UsuarioInput usuario)
+        public async Task<IActionResult> Post([FromBody] UsuarioInput usuario)
         {
-            _appService.Adicionar(usuario);
+            await _appService.Adicionar(usuario);
             return Ok();
         }
 
@@ -75,9 +76,9 @@ namespace App.WebAPI.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult Put(int id, [FromBody]UsuarioInput usuario)
+        public async Task<IActionResult> Put(int id, [FromBody]UsuarioInput usuario)
         {
-            _appService.Atualizar(id, usuario);
+            await _appService.Atualizar(id, usuario);
             return Ok();
         }
 
@@ -89,9 +90,9 @@ namespace App.WebAPI.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _appService.Excluir(id);
+            await _appService.Excluir(id);
             return Ok();
         }
     }

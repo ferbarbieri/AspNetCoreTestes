@@ -4,6 +4,7 @@ using Domain.Models;
 using Domain.RepositoryInterfaces;
 using SharedKernel;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Application
 {
@@ -17,23 +18,23 @@ namespace Application
 
         #region Queries
 
-        public Pedido ObterPedido(int id)
+        public async Task<Pedido> ObterPedido(int id)
         {
-            return _repo.GetById(id);
+            return await _repo.GetById(id);
         }
 
-        public IList<Pedido> ObterPedidosPorCliente(int IdCliente)
+        public async Task<IList<Pedido>> ObterPedidosPorCliente(int IdCliente)
         {
-            return _repo.ObterPedidosPorCliente(IdCliente);
+            return await _repo.ObterPedidosPorCliente(IdCliente);
         }
 
         #endregion
 
         #region Commands
 
-        public void AdicionarPedido(Pedido pedido)
+        public async Task AdicionarPedido(Pedido pedido)
         {
-            _repo.Insert(pedido);
+            await _repo.Insert(pedido);
 
             var PedidoEvent = new PedidoCriadoEvent(pedido);
             DomainEvents.Raise(PedidoEvent);

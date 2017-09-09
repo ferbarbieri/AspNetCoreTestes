@@ -1,7 +1,9 @@
 ﻿using Domain.Models;
 using Domain.RepositoryInterfaces;
 using Infra.Repositories.Contexts;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Repositories
 {
@@ -11,9 +13,9 @@ namespace Repositories
         {
         }
 
-        public Usuario GetByEmail(string email)
+        public Task<Usuario> GetByEmail(string email)
         {
-            return DbSet.FirstOrDefault(u => u.Email == email);
+            return DbSet.FirstOrDefaultAsync(u => u.Email == email);
         }
     }
 }

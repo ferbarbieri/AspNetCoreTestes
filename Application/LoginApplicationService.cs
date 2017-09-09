@@ -7,6 +7,7 @@ using Infra.Repositories.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Repositories;
+using System.Threading.Tasks;
 
 namespace Application
 {
@@ -35,12 +36,12 @@ namespace Application
         /// <param name="email"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public Usuario Login(string email, string password)
+        public async Task<Usuario> Login(string email, string password)
         {
 
             var dominio = email.Split('@')[1];
             // Valida se o dominio está presenta na lista de tenants do sistema, e se o tenant está ativo.
-            var tenant = _tenantRepository.ObterPeloDominio(dominio);
+            var tenant = await _tenantRepository.ObterPeloDominio(dominio);
             if(tenant == null 
                 || tenant.Status == TenantStatus.Bloqueado 
                 || tenant.Status == TenantStatus.AguardandoConfirmacaoRegistro)
@@ -64,7 +65,7 @@ namespace Application
             #endregion
 
 
-            var user = repo.GetByEmail(email);
+            var user = await repo.GetByEmail(email);
 
             // veririfica se a senha está ok
             if (user != null && PasswordHasher.Verify(password, user.Senha))

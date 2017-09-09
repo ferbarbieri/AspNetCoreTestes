@@ -6,6 +6,7 @@ using Domain.RepositoryInterfaces;
 using Domain.SharedKernel.Exceptions;
 using Domain.SharedKernel.Queries;
 using SharedKernel;
+using System.Threading.Tasks;
 
 namespace Application
 {
@@ -19,17 +20,17 @@ namespace Application
 
         #region Queries
 
-        public Cliente Obter(int id)
+        public Task<Cliente> Obter(int id)
         {
             return ObterCliente(id);
         }
 
-        public PaginatedResults<Cliente> ListarTodos(int paginaAtual, int totalPorPagina)
+        public Task<PaginatedResults<Cliente>> ListarTodos(int paginaAtual, int totalPorPagina)
         {
             return _repo.GetAll(new PaginationInput(paginaAtual, totalPorPagina));
         }
 
-        public PaginatedResults<Cliente> FiltrarPorNome(string nome, int paginaAtual, int totalPorPagina)
+        public Task<PaginatedResults<Cliente>> FiltrarPorNome(string nome, int paginaAtual, int totalPorPagina)
         {
             return _repo.GetAllBy(
                 c => c.Nome.StartsWith(nome),
@@ -41,10 +42,10 @@ namespace Application
 
         #region Commands
 
-        public void Adicionar(ClienteInput cliente)
+        public async Task Adicionar(ClienteInput cliente)
         {
             var c = new Cliente(cliente.Nome);
-            _repo.Insert(c);
+            await _repo.Insert(c);
 
             var userEvent = new ClienteCriadoEvent(c);
            
@@ -52,21 +53,21 @@ namespace Application
         }
         
 
-        public void Excluir(int id)
+        public async Task Excluir(int id)
         {
-            _repo.Delete(ObterCliente(id));
+            await _repo.Delete(await ObterCliente(id));
         }
 
-        public void Atualizar(int id, ClienteInput cliente)
+        public async Task Atualizar(int id, ClienteInput cliente)
         {
-            var c = ObterCliente(id);
+            var c = await ObterCliente(id);
             c.UpdateInfo(cliente.Nome);
-            _repo.Update(c);
+            await _repo.Update(c);
         }
 
         #endregion
 
-        private Cliente ObterCliente(int id)
+        private Task<Cliente> ObterCliente(int id)
         {
             var cliente = _repo.GetById(id);
             if (cliente == null)

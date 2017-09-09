@@ -2,22 +2,23 @@
 using Application.ViewModels;
 using Domain.Models;
 using Domain.SharedKernel.Queries;
+using System.Threading.Tasks;
 
 namespace Application.Interfaces
 {
     public interface IUsuarioApplicationService
     {
-        UsuarioViewModel Obter(int id);
+        Task<UsuarioViewModel> Obter(int id);
         
-        void Adicionar(UsuarioInput input);
+        Task Adicionar(UsuarioInput input);
 
-        void Atualizar(int id, UsuarioInput input);
+        Task Atualizar(int id, UsuarioInput input);
 
-        void Excluir(int id);
+        Task Excluir(int id);
         
-        PaginatedResults<Usuario> ListarTodos(int paginaAtual, int totalPorPagina);
+        Task<PaginatedResults<Usuario>> ListarTodos(int paginaAtual, int totalPorPagina);
 
-        PaginatedResults<Usuario> FiltrarPorNome(string nome, int paginaAtual, int totalPorPagina);
+        Task<PaginatedResults<Usuario>> FiltrarPorNome(string nome, int paginaAtual, int totalPorPagina);
 
     }
 }

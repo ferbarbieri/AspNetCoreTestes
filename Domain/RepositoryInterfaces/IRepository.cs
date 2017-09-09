@@ -3,23 +3,24 @@ using Domain.SharedKernel.Queries;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Domain.RepositoryInterfaces
 {
     public interface IRepository<TEntity> where TEntity : Entity
     {
-        TEntity GetById(int id);
+        Task<TEntity> GetById(int id);
 
-        IList<TEntity> GetAllBy(Expression<Func<TEntity, bool>> predicate);
+        Task<List<TEntity>> GetAllBy(Expression<Func<TEntity, bool>> predicate);
 
-        PaginatedResults<TEntity> GetAllBy(Expression<Func<TEntity, bool>> predicate, PaginationInput paginationInput);
+        Task<PaginatedResults<TEntity>> GetAllBy(Expression<Func<TEntity, bool>> predicate, PaginationInput paginationInput);
 
-        PaginatedResults<TEntity> GetAll(PaginationInput paginationInput);
+        Task<PaginatedResults<TEntity>> GetAll(PaginationInput paginationInput);
 
-        void Update(TEntity entity);
+        Task Update(TEntity entity);
 
-        void Insert(TEntity entity);
+        Task Insert(TEntity entity);
 
-        void Delete(TEntity entity);
+        Task Delete(TEntity entity);
     }
 }
