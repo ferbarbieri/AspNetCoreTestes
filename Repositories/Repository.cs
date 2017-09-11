@@ -25,13 +25,11 @@ namespace Repositories
        
         public virtual Task<TEntity> GetById(int id)
         {
-            return DbSet.AsNoTracking()
-                .FirstOrDefaultAsync(c => c.Id == id);
+            return DbSet.FirstOrDefaultAsync(c => c.Id == id);
         }
         public Task<List<TEntity>> GetAllBy(Expression<Func<TEntity, bool>> predicate)
         {
-            return DbSet.AsNoTracking()
-                .Where(predicate).ToListAsync();
+            return DbSet.Where(predicate).ToListAsync();
         }
 
         public async Task<PaginatedResults<TEntity>> GetAllBy(Expression<Func<TEntity, bool>> predicate, PaginationInput paginationInput)

@@ -32,9 +32,16 @@ namespace SharedKernel
 
         public static void Raise<T>(T args) where T : IDomainEvent
         {
-            foreach (var handler in Container.GetAllInstances<IHandle<T>>())
+            try
             {
-                handler.Handle(args);
+                foreach (var handler in Container.GetAllInstances<IHandle<T>>())
+                {
+                    handler.Handle(args);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Trace("Erro ao lançar evento:" + ex.Message);
             }
 
             if (actions != null)

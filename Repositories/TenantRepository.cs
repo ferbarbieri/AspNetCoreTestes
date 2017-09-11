@@ -15,7 +15,7 @@ namespace Repositories
 
         public Task<Tenant> ObterPeloDominio(string dominio)
         {
-            return DbSet.FirstOrDefaultAsync(c => c.Dominio == dominio);
+            return DbSet.AsNoTracking().FirstOrDefaultAsync(c => c.Dominio == dominio);
         }
     }
 }

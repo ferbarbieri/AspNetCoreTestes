@@ -1,6 +1,8 @@
 ﻿using Domain.Models;
 using Infra.Repositories.Contexts.Config;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Infra.Repositories.Contexts
 {
@@ -17,8 +19,7 @@ namespace Infra.Repositories.Contexts
 
         #region Config
 
-        public LojaContext(DbContextOptions<LojaContext> options) : base(options) =>
-            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+        public LojaContext(DbContextOptions<LojaContext> options) : base(options) { }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,6 +38,7 @@ namespace Infra.Repositories.Contexts
                     entity
                     .ToTable("Pedido")
                     .AddIsDeletedFilter();
+                    
                 })
 
                 .Entity<Produto>(entity =>
@@ -63,6 +65,12 @@ namespace Infra.Repositories.Contexts
             // Adiciono as propriedades padrão para serem tratadas na hora de salvar.
             DefaultPropertiesConfig.SaveDefaultPropertiesChanges(ChangeTracker);
             return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            DefaultPropertiesConfig.SaveDefaultPropertiesChanges(ChangeTracker);
+            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }

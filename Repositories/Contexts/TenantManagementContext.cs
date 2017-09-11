@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Infra.Repositories.Contexts
 {
@@ -17,8 +19,7 @@ namespace Infra.Repositories.Contexts
 
         #region Config
 
-        public TenantManagementContext(DbContextOptions<TenantManagementContext> options) : base(options) =>
-            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+        public TenantManagementContext(DbContextOptions<TenantManagementContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -43,6 +44,12 @@ namespace Infra.Repositories.Contexts
         {
             DefaultPropertiesConfig.SaveDefaultPropertiesChanges(ChangeTracker);
             return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            DefaultPropertiesConfig.SaveDefaultPropertiesChanges(ChangeTracker);
+            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }
