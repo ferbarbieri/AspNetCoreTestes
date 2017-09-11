@@ -16,7 +16,7 @@ namespace Repositories
 
         public Task<List<Pedido>> ObterPedidosPorCliente(int idCliente)
         {
-            return DbSet.Where(p => p.Cliente.Id == idCliente).ToListAsync();
+            return DbSet.AsNoTracking().Where(p => p.Cliente.Id == idCliente).ToListAsync();
         }
     }
 }

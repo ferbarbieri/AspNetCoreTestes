@@ -1,4 +1,6 @@
-﻿using Domain.Models;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Domain.Models;
 using Infra.Repositories.Contexts.Config;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,11 +13,10 @@ namespace Infra.Repositories.Contexts
 
         public DbSet<Usuario> Usuarios { get; set; }
         #endregion
-        
+
         #region Config
 
-        public AdminContext(DbContextOptions<AdminContext> options) : base(options) => 
-            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+        public AdminContext(DbContextOptions<AdminContext> options) : base(options) { }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,6 +41,12 @@ namespace Infra.Repositories.Contexts
         {
             DefaultPropertiesConfig.SaveDefaultPropertiesChanges(ChangeTracker);
             return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            DefaultPropertiesConfig.SaveDefaultPropertiesChanges(ChangeTracker);
+            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Repositories
 
         public Task<Usuario> GetByEmail(string email)
         {
-            return DbSet.FirstOrDefaultAsync(u => u.Email == email);
+            return DbSet.AsNoTracking().FirstOrDefaultAsync(u => u.Email == email);
         }
     }
 }

@@ -90,7 +90,9 @@ namespace App.WebAPI
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("Administradores", p => p.RequireClaim("Profile", PerfilUsuario.Administradores.ToString()));
+                options.AddPolicy(
+                    "Administradores", 
+                    p => p.RequireClaim("Profile", PerfilUsuario.Administradores.ToString()));
             });
 
             #endregion

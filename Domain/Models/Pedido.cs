@@ -14,15 +14,22 @@ namespace Domain.Models
         {
         }
 
-        public Pedido(Cliente cliente, IList<ItensPedido> itens)
+        public Pedido(Cliente cliente, IList<ItensPedidoDTO> itens)
         {
             new Guard()
                 .NotNull("cliente", cliente)
                 .HasMoreThanOne("itens", itens)
                 .Validate();
 
+            Itens = new List<ItensPedido>();
+
+            // TODO: mudar para automapper
+            foreach (var item in itens)
+            {
+                Itens.Add(new ItensPedido(this, item.Produto, item.Quantidade));
+            }
+
             Cliente = cliente;
-            Itens = itens;
         }
     }
 }
