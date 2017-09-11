@@ -7,6 +7,9 @@ using System.Text.RegularExpressions;
 
 namespace Domain.SharedKernel.Validation
 {
+    /// <summary>
+    /// Classe que realiza validações em sequencia.
+    /// </summary>
     public class Guard
     {
         private IList<FieldValidationInfo> validations;
@@ -16,12 +19,26 @@ namespace Domain.SharedKernel.Validation
             validations = new List<FieldValidationInfo>();
         }
 
+        /// <summary>
+        /// Executa a validação
+        /// </summary>
+        /// <param name="message">Mensagem a ser devolvida</param>
         public void Validate(string message = "Ocorreram Erros")
         {
             if (validations.Any(x => !x.IsValid))
                 throw new FieldsValidationException(message, validations.Where(c => !c.IsValid).ToList());
         }
-        
+
+        /// <summary>
+        /// Realiza apenas a checagem se existe algo inválido, sem lançar exceçao
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public bool Check(string message = "Ocorreram Erros")
+        {
+            return !validations.Any(x => !x.IsValid);
+        }
+
         public Guard NotNull(string field, object obj)
         {
             if (obj == null)
@@ -92,6 +109,20 @@ namespace Domain.SharedKernel.Validation
         {
             if(lista == null || lista.Count == 0)
                 validations.Add(new FieldValidationInfo(field, $"A lista {field} não pode estar vazia", false));
+            else
+                validations.Add(ValidationOK());
+
+            return this;
+        }
+
+        public Guard ValidDomain(string field, string domain)
+        {
+            string expression = @"^(([a-zA-Z]{1})|([a-zA-Z]{1}[a-zA-Z]{1})|([a-zA-Z]{1}[0-9]{1})|([0-9]{1}[a-zA-Z]{1})|([a-zA-Z0-9][a-zA-Z0-9-_]{1,61}[a-zA-Z0-9]))\.([a-zA-Z]{2,6}|[a-zA-Z0-9-]{2,30}\.[a-zA-Z]{2,3})$";
+
+            var regex = new Regex(expression, RegexOptions.IgnoreCase);
+
+            if (!regex.IsMatch(domain))
+                validations.Add(new FieldValidationInfo(field, "O domínio não é válido.", false));
             else
                 validations.Add(ValidationOK());
 

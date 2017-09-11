@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DependencyResolver\Infra.DependencyResolver.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\Infra.TenantGenerator\Infra.TenantGenerator.csproj" />
+    <ProjectReference Include="..\Repositories\Infra.Repositories.csproj" />
+    <ProjectReference Include="..\SharedKernel\Domain.SharedKernel.csproj" />
+  </ItemGroup>
+
+</Project>
