@@ -31,7 +31,7 @@ Após isso, rodar o projeto WebApi. Deverá abrir a documentação do Swagger on
 
 Usuarios de exemplo:
 
-admin@bazooca.com.br -> administrador do tenant bazooca
-admin@viceri.com.br -> administrado do tenant viceri
+- admin@bazooca.com.br -> administrador do tenant bazooca
+- admin@viceri.com.br -> administrador do tenant viceri
 
-senhas: 12345678
+- senhas: 12345678
