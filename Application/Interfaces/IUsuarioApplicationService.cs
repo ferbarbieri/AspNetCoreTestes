@@ -10,15 +10,15 @@ namespace Application.Interfaces
     {
         Task<UsuarioViewModel> Obter(int id);
         
-        Task Adicionar(UsuarioInput input);
+        Task<UsuarioViewModel> Adicionar(UsuarioInput input);
 
         Task Atualizar(int id, UsuarioInput input);
 
         Task Excluir(int id);
         
-        Task<PaginatedResults<Usuario>> ListarTodos(int paginaAtual, int totalPorPagina);
+        Task<PaginatedResults<UsuarioViewModel>> ListarTodos(int paginaAtual, int totalPorPagina);
 
-        Task<PaginatedResults<Usuario>> FiltrarPorNome(string nome, int paginaAtual, int totalPorPagina);
+        Task<PaginatedResults<UsuarioViewModel>> FiltrarPorNome(string nome, int paginaAtual, int totalPorPagina);
 
     }
 }

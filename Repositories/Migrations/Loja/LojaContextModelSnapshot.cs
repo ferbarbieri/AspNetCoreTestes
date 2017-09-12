@@ -10,7 +10,7 @@ using System;
 
 namespace Infra.Repositories.Migrations.Loja
 {
-    [DbContext(typeof(LojaContext))]
+    [DbContext(typeof(AdminContext))]
     partial class LojaContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

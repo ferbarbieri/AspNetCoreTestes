@@ -42,7 +42,7 @@ namespace Application
 
         #region Commands
 
-        public async Task Adicionar(ClienteInput cliente)
+        public async Task<Cliente> Adicionar(ClienteInput cliente)
         {
             var c = new Cliente(cliente.Nome);
             await _repo.Insert(c);
@@ -50,6 +50,8 @@ namespace Application
             var userEvent = new ClienteCriadoEvent(c);
            
             DomainEvents.Raise(userEvent);
+
+            return c;
         }
         
 

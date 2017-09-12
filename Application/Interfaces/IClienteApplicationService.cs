@@ -9,7 +9,7 @@ namespace Application.Interfaces
     {
         Task<Cliente> Obter(int id);
         
-        Task Adicionar(ClienteInput cliente);
+        Task<Cliente> Adicionar(ClienteInput cliente);
 
         Task<PaginatedResults<Cliente>> ListarTodos(int paginaAtual, int totalPorPagina);
 

@@ -44,7 +44,8 @@ namespace App.WebAPI.Controllers
         /// </summary>
         /// <param name="id">ID do cliente</param>
         /// <returns><see cref="Cliente"/></returns>
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("{id}", Name = "GetClienteById")]
         [ProducesResponseType(typeof(Cliente), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> Get(int id)
@@ -58,12 +59,12 @@ namespace App.WebAPI.Controllers
         /// <param name="cliente"><see cref="ClienteInput"/></param>
         /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(typeof(Cliente), 200)]
+        [ProducesResponseType(typeof(Cliente), 201)]
         [ProducesResponseType(400)]
         public async Task<IActionResult> Post([FromBody] ClienteInput cliente)
         {
-            await _appService.Adicionar(cliente);
-            return Ok();
+            var c = await _appService.Adicionar(cliente);
+            return CreatedAtRoute("GetClienteById", new { id = c.Id } , c);
         }
 
         /// <summary>
