@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LojaAngular.Controllers
+namespace Meritus_Frontend_Web.Controllers
 {
     public class HomeController : Controller
     {

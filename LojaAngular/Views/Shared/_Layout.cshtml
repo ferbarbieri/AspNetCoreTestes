@@ -1,12 +1,15 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - LojaAngular</title>
+    <title>Meritus.Frontend.Web</title>
     <base href="~/" />
-
-    <link rel="stylesheet" href="~/dist/vendor.css" asp-append-version="true" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!--<link rel="stylesheet" href="~/dist/vendor.css" asp-append-version="true" />-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
     @RenderBody()
@@ -14,3 +17,22 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
+
+<style>
+    ::-webkit-scrollbar {
+        height: 0px;
+        width: 0px;
+        background: none;
+    }
+
+    body {
+        font-family: 'Arimo', sans-serif;
+        margin: 0 0 60px; /* altura do footer */
+        overflow: hidden;
+    }
+
+    html {
+        position: relative;
+        height: 100%;
+    }
+</style>

@@ -1,0 +1,68 @@
+<div class="center-content container">
+  <div class="loader" id="loader"></div>
+  <div class="starter-template row" id="starter-template">
+    <div class="posts col-md-12" *ngFor="let conteudo of data.conteudo">
+      <ng-template [ngIf]="conteudo.tipo == 'feedback'">
+        <div class="row">
+          <h1 class="col-md-11">{{conteudo.titulo}}</h1>
+          <i (click)="atualizarNav(conteudo)" class="fa fa-chevron-right col-md-1"></i>
+        </div>
+        <p class="lead" *ngFor="let item of conteudo.descricao">{{item}}</p>
+      </ng-template>
+
+      <ng-template [ngIf]="conteudo.tipo == 'status'">
+        <div class="row">
+          <h1 class="col-md-11">{{conteudo.titulo}}</h1>
+          <i (click)="atualizarNav(conteudo)" class="fa fa-chevron-right col-md-1"></i>
+        </div>
+        <br />
+
+        <p class="date offset-md-3" *ngFor="let item of conteudo.descricao">{{item}}</p>
+
+        <br />
+
+        <div class="col-md-12">
+          <label class="status offset-md-3">{{conteudo.statusInicial}}</label>
+          <label class="status offset-md-1">-></label>
+          <label class="status offset-md-1">{{conteudo.statusFinal}}</label>
+        </div>
+      </ng-template>
+
+      <ng-template [ngIf]="conteudo.tipo == 'lembrete'">
+        <div class="row">
+          <h1 class="col-md-11">{{conteudo.titulo}}</h1>
+          <i (click)="atualizarNav(conteudo)" class="fa fa-chevron-right col-md-1"></i>
+        </div>
+        <ul>
+          <li *ngFor="let item of conteudo.descricao">
+            <p class="lead">{{item}}</p>
+          </li>
+        </ul>
+      </ng-template>
+
+      <ng-template [ngIf]="conteudo.tipo == 'reuniao'">
+        <div class="row">
+          <h1 class="col-md-11">{{conteudo.titulo}}</h1>
+          <i (click)="atualizarNav(conteudo)" class="fa fa-chevron-right col-md-1"></i>
+        </div>
+
+        <br />
+
+        <p class="date offset-md-4" *ngFor="let item of conteudo.descricao">{{item}}</p>
+
+        <br />
+
+        <div class="buttons col-md-12 offset-md-2">
+          <button class="btn btn-default col-md-3">Adicionar ao calendário</button>
+          <button class="btn btn-danger col-md-3">Propor uma nova data</button>
+        </div>
+      </ng-template>
+    </div>
+
+    &nbsp;
+
+    <div class="footer col-md-12" id="footerBar" name="footerBar">
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>

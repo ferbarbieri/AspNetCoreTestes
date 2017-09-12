@@ -6,6 +6,7 @@ using Application.Input;
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using Application.ViewModels;
+using App.WebAPI.Attributes;
 
 namespace App.WebAPI.Controllers
 {
@@ -34,7 +35,7 @@ namespace App.WebAPI.Controllers
         /// <param name="porPagina">Quantidade de itens por página</param>
         /// <returns><see cref="IList{Usuario}"/></returns>
         [HttpGet]
-        [ProducesResponseType(typeof(IList<Usuario>), 200)]
+        [ResponseOK(typeof(IList<Usuario>))]
         public async Task<IActionResult> Get(int pagina, int porPagina)
         {
             return Ok(await _appService.ListarTodos(pagina, porPagina));
@@ -47,8 +48,8 @@ namespace App.WebAPI.Controllers
         /// <returns><see cref="Usuario"/></returns>
         [HttpGet]
         [Route("{id}", Name = "GetUsuarioById")]
-        [ProducesResponseType(typeof(Usuario), 200)]
-        [ProducesResponseType(404)]
+        [ResponseOK(typeof(Usuario))]
+        [ResponseNotFound]
         public async Task<IActionResult> Get(int id)
         {
             return Ok(await _appService.Obter(id));
@@ -60,12 +61,12 @@ namespace App.WebAPI.Controllers
         /// <param name="usuario"><see cref="UsuarioInput"/></param>
         /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(typeof(UsuarioViewModel), 201)]
-        [ProducesResponseType(400)]
+        [ResponseCreated(typeof(UsuarioViewModel))]
+        [ResponseBadRequest]
         public async Task<IActionResult> Post([FromBody] UsuarioInput usuario)
         {
             var u = await _appService.Adicionar(usuario);
-            return CreatedAtRoute("GetUsuarioById", new { id = u.Id }, u);
+            return Created("GetUsuarioById", u.Id, u);
         }
 
         /// <summary>
@@ -75,13 +76,13 @@ namespace App.WebAPI.Controllers
         /// <param name="usuario"><see cref="UsuarioInput"/></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
+        [ResponseAccepted]
+        [ResponseBadRequest]
+        [ResponseNotFound]
         public async Task<IActionResult> Put(int id, [FromBody]UsuarioInput usuario)
         {
             await _appService.Atualizar(id, usuario);
-            return Ok();
+            return Accepted();
         }
 
         /// <summary>
@@ -90,12 +91,12 @@ namespace App.WebAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
+        [ResponseNoContent]
+        [ResponseNotFound]
         public async Task<IActionResult> Delete(int id)
         {
             await _appService.Excluir(id);
-            return Ok();
+            return Deleted();
         }
     }
 }

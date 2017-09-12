@@ -22,8 +22,8 @@ namespace Domain.SharedKernel.Validation
         /// <summary>
         /// Executa a validação
         /// </summary>
-        /// <param name="message">Mensagem a ser devolvida</param>
-        public void Validate(string message = "Ocorreram Erros")
+        /// <param name="message">Mensagem a ser devolvida caso sejam encontrados valores inválidos</param>
+        public void Validate(string message = "Um ou mais valores informados são inválidos.")
         {
             if (validations.Any(x => !x.IsValid))
                 throw new FieldsValidationException(message, validations.Where(c => !c.IsValid).ToList());
@@ -32,9 +32,8 @@ namespace Domain.SharedKernel.Validation
         /// <summary>
         /// Realiza apenas a checagem se existe algo inválido, sem lançar exceçao
         /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        public bool Check(string message = "Ocorreram Erros")
+        /// <returns>True caso os dados sejam válidos</returns>
+        public bool Check()
         {
             return !validations.Any(x => !x.IsValid);
         }

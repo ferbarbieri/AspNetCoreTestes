@@ -6,7 +6,7 @@ namespace Domain.SharedKernel.Exceptions
     [Serializable]
     public class UserLoginFailedException : MeritusException
     {
-        public UserLoginFailedException()
+        public UserLoginFailedException() : base("Email ou senha inválidos")
         {
         }
 

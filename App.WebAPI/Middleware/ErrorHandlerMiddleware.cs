@@ -48,11 +48,15 @@ namespace App.WebAPI.Middleware
                     code = HttpStatusCode.InternalServerError; // 500 se for qualquer outro erro
                     break;
             }
-        
-            var result = JsonConvert.SerializeObject(new { Erro = exception.Message });
+
+            var errorObj = new ErrorResponse(exception);
+
+            var result = JsonConvert.SerializeObject(errorObj);
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;
             return context.Response.WriteAsync(result);
         }
+
+        
     }
 }

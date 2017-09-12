@@ -1,6 +1,8 @@
-﻿using App.WebAPI.ViewModels;
+﻿using App.WebAPI.Attributes;
+using App.WebAPI.ViewModels;
 using Application.Interfaces;
 using Domain.SharedKernel.Exceptions;
+using Domain.SharedKernel.Validation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -43,12 +45,15 @@ namespace App.WebAPI.Controllers
         /// <returns>JWT Bearer Token</returns>
         [HttpPost]
         [AllowAnonymous]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
+        [ResponseOK]
+        [ResponseBadRequest]
         public async Task<IActionResult> Login([FromBody] LoginViewModel login)
         {
-            if (login == null)
-                return BadRequest("Credenciais não informadas");
+            new Guard()
+                .NotNull("Credenciais", login)
+                .NotNullOrEmpty("Email", login.Email)
+                .NotNullOrEmpty("Senha", login.Senha)
+                .Validate("Credenciais Inválidas");
             
             var user = await _loginService.Login(login.Email, login.Senha);
 

@@ -7,8 +7,8 @@ namespace Domain.SharedKernel.Queries
         public PaginationInput(int currentPage, int recordsPerPage)
         {
             new Guard()
-                .GreaterThan("currentPage", currentPage, 0)
-                .GreaterThan("recordsPerPage", recordsPerPage, 0)
+                .GreaterThan("Pagina", currentPage, 0)
+                .GreaterThan("PorPagina", recordsPerPage, 0)
                 .Validate();
 
             CurrentPage = currentPage;

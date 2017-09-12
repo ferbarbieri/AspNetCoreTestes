@@ -1,0 +1,39 @@
+<div class="center-content container">
+  <div class="loader" id="loader"></div>
+  <div class="starter-template row" id="starter-template">
+    <h1> Seu Plano de Carreira </h1>
+
+    <div class="posts col-md-12">
+
+      <h2>{{data.nome}}</h2>
+
+      <br />
+
+      <h1 class="date offset-md-3">Estar qualificado para atuar como {{data.cargoDesejado}} até 02/2018</h1>
+
+      <br />
+
+      <div class="col-md-12">
+        <label class="status offset-md-3">{{data.cargoAtual}}</label>
+        <label class="status offset-md-1">-></label>
+        <label class="status offset-md-1">{{data.cargoDesejado}}</label>
+      </div>
+
+    </div>
+
+    <h1>Tarefas</h1>
+    <ul>
+      <li *ngFor="let item of data.tarefas">
+        <span *ngIf="item.concluida == 1">&#9989;</span>
+        <span *ngIf="item.concluida == 0">&#10060;</span> &nbsp;
+        <span class="lead">{{item.descricao}}</span>
+      </li>
+    </ul>
+
+    &nbsp;
+
+    <div class="footer col-md-12" id="footerBar" name="footerBar">
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>

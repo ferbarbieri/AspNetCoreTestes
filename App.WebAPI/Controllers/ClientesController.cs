@@ -5,6 +5,7 @@ using Application.Interfaces;
 using Application.Input;
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
+using App.WebAPI.Attributes;
 
 namespace App.WebAPI.Controllers
 {
@@ -33,7 +34,7 @@ namespace App.WebAPI.Controllers
         /// <param name="porPagina">Quantidade de itens por página</param>
         /// <returns><see cref="IList{Cliente}"/></returns>
         [HttpGet]
-        [ProducesResponseType(typeof(IList<Cliente>), 200)]
+        [ResponseOK(typeof(IList<Cliente>))]
         public async Task<IActionResult> Get(int pagina, int porPagina)
         {
             return Ok(await _appService.ListarTodos(pagina, porPagina));
@@ -46,7 +47,7 @@ namespace App.WebAPI.Controllers
         /// <returns><see cref="Cliente"/></returns>
         [HttpGet]
         [Route("{id}", Name = "GetClienteById")]
-        [ProducesResponseType(typeof(Cliente), 200)]
+        [ResponseOK(typeof(Cliente))]
         [ProducesResponseType(404)]
         public async Task<IActionResult> Get(int id)
         {
@@ -59,12 +60,12 @@ namespace App.WebAPI.Controllers
         /// <param name="cliente"><see cref="ClienteInput"/></param>
         /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(typeof(Cliente), 201)]
-        [ProducesResponseType(400)]
+        [ResponseCreated(typeof(Cliente))]
+        [ResponseBadRequest]
         public async Task<IActionResult> Post([FromBody] ClienteInput cliente)
         {
             var c = await _appService.Adicionar(cliente);
-            return CreatedAtRoute("GetClienteById", new { id = c.Id } , c);
+            return Created("GetClienteById", c.Id, c);
         }
 
         /// <summary>
@@ -74,13 +75,13 @@ namespace App.WebAPI.Controllers
         /// <param name="cliente"><see cref="ClienteInput"/></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
+        [ResponseAccepted]
+        [ResponseBadRequest]
+        [ResponseNotFound]
         public async Task<IActionResult> Put(int id, [FromBody]ClienteInput cliente)
         {
             await _appService.Atualizar(id, cliente);
-            return Ok();
+            return Accepted();
         }
 
         /// <summary>
@@ -89,12 +90,12 @@ namespace App.WebAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
+        [ResponseNoContent]
+        [ResponseNotFound]
         public async Task<IActionResult> Delete(int id)
         {
             await _appService.Excluir(id);
-            return Ok();
+            return Deleted();
         }
     }
 }

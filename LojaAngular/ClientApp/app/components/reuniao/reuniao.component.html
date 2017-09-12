@@ -1,0 +1,44 @@
+<div class="center-content container">
+  <div class="loader" id="loader"></div>
+  <div class="starter-template row" id="starter-template">
+    <h1> Minhas Reuniões 1:1 </h1>
+    <br />
+    <h3>Reuniões em aberto</h3>
+    <ng-container *ngFor="let item of data.reuniao">
+      <ng-template [ngIf]="item.situacao == 'Em aberto'">
+        <div class="posts col-md-12">
+          <h2>{{item.participante}}</h2>
+          <p>Solicitou a reunião em {{item.data}}</p>
+
+          <br />
+
+          <div class="col-md-11">
+            <label class="status offset-md-3">{{item.usuario}}</label>
+            <label class="status offset-md-1">{{item.data}}</label>
+            <label class="status offset-md-1">{{item.participante}}</label>
+          </div>
+        </div>
+      </ng-template>
+    </ng-container>
+
+    <br />
+
+    <h3>Reuniões realizadas</h3>
+    <ng-container *ngFor="let item of data.reuniao">
+      <ng-template [ngIf]="item.situacao == 'Finalizada' || item.situacao == 'Cancelada'">
+        <div class="posts col-md-12 row">
+          <h2 class="col-md-4">{{item.participante}}</h2>
+          <p class="col-md-7">{{item.data}} - {{item.situacao}}</p>
+          <i class="fa fa-sort-desc col-md-1"></i>
+        </div>
+      </ng-template>
+    </ng-container>
+
+    &nbsp;
+
+    <div class="footer col-md-12" id="footerBar" name="footerBar">
+      <app-footer></app-footer>
+    </div>
+
+  </div>
+</div>

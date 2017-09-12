@@ -1,0 +1,76 @@
+.bg-inverse {
+    background-color: turquoise !important;
+}
+
+.nav-link {
+    color: white !important;
+}
+
+.navbar {
+    padding: .2rem 1rem !important;
+}
+
+#teste {
+    background-color: turquoise;
+}
+
+.box-title {
+    background-color: #f5f5f5;
+    font-size: larger;
+    padding: 7px 0;
+    margin-right: -15px;
+    margin-left: -15px;
+    padding-left: 30px;
+}
+
+.box {
+    padding-top: 45px;
+    float: left;
+    border-right: 1px solid lightgray;
+    height: 100vh;
+    z-index: 2;
+    display: none;
+}
+
+.activities {
+    padding-top: 45px;
+    float: right;
+    border-left: 1px solid lightgray;
+    height: 100vh;
+    z-index: 2;
+    display: none;
+}
+
+.nav-search {
+    padding-top: 2px;
+    width: 300px;
+}
+
+.nav-input input {
+    width: 100%;
+}
+
+.white-color {
+    color: white;
+}
+
+.align-left {
+    float: left;
+}
+
+.align-right {
+    right: 0;
+    position: absolute;
+    top: 5px;
+}
+
+@media screen and (max-width: 1024px) {
+    .hide-mobile {
+        display: none !important;
+    }
+
+    .user {
+        margin-right: 15px;
+        margin-top: 6px;
+    }
+}

@@ -1,0 +1,65 @@
+<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse fixed-top">
+
+  <ul class="nav navbar-nav mr-auto">
+    <li class="nav-item">
+    </li>
+    <li class="nav-item active">
+      <button (click)="toggleCollapse()" id="teste" class="btn btn-default align-left" type="button"><i style="color:white" class="fa fa-bars"></i></button>      &nbsp;
+      <a class="white-color" href="#"><i class="fa fa-medium"></i></a> &nbsp;
+      <a class="navbar-brand" style="color:white" href="#">meritus</a>
+
+      <div class="align-right">
+        <input class="hide-mobile nav-search" type="text" placeholder="Procurar pessoas, objetivos, etc..." />
+        <a class="white-color hide-mobile" href=""><i class="fa fa-medium" aria-hidden="true"></i></a>
+        <label class="white-color user" for="user">Fernando</label>
+        <button (click)="toggleCollapseActivities()" id="teste" class="btn btn-default hide-mobile" type="button"><i style="color:white" class="fa fa-sort-desc"></i></button>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+<!--Box de Dados Pessoais-->
+<div class="box col-md-2" [@collapse]="collapse">
+  <div>
+    <h2 class="box-title"><i class="fa fa-facebook" aria-hidden="true"></i>Você</h2>
+    <ul>
+      <li><a routerLink="/">Home</a></li>
+      <li><a routerLink="/carreira">Seu Plano</a></li>
+      <li><a routerLink="/objetivos">Seus Objetivos</a></li>
+      <li><a routerLink="/reunioes">Reuniões 1:1</a></li>
+      <li><a routerLink="/feedbacks">Feedbacks</a></li>
+      <li><a routerLink="/desempenho">Avaliação de Desempenho</a></li>
+    </ul>
+  </div>
+
+  <div>
+    <h2 class="box-title"><i class="fa fa-facebook" aria-hidden="true"></i>Seu Time</h2>
+    <ul>
+      <li>Marcel Pratte</li>
+      <li>João da Silva</li>
+      <li>Maurício Souza</li>
+      <li>Lucas Floriano</li>
+    </ul>
+  </div>
+
+  <div>
+    <h2 class="box-title"><i class="fa fa-facebook" aria-hidden="true"></i>Companhia</h2>
+    <ul>
+      <li>Pessoas</li>
+      <li>Objetivos</li>
+      <li>Administração</li>
+      <li>RH</li>
+    </ul>
+  </div>
+</div>
+
+<!--Box de Activities-->
+<div class="activities col-md-2" [@collapse]="collapseActivities">
+  <div>
+    <h2 class="box-title"><i class="fa fa-facebook" aria-hidden="true"></i>Reunião</h2>
+    <ul>
+      <li>{{eventoService.tituloConteudoNav}}</li>
+      <li>{{eventoService.descricaoConteudoNav}}</li>
+    </ul>
+  </div>
+</div>

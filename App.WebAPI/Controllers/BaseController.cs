@@ -12,6 +12,22 @@ namespace App.WebAPI.Controllers
     /// </summary>
     public abstract class BaseController : Controller
     {
-        
+        /// <summary>
+        /// Retorna 204 No Content
+        /// </summary>
+        /// <returns></returns>
+        protected IActionResult Deleted()
+        {
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Retorna 201 No Created
+        /// </summary>
+        /// <returns></returns>
+        protected IActionResult Created<T>(string rota, int id, T objeto) where T : class
+        {
+            return CreatedAtRoute(rota, new { id = id }, objeto);
+        }
     }
 }

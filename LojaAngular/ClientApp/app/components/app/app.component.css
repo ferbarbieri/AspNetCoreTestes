@@ -1,6 +1,15 @@
-@media (max-width: 767px) {
-    /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */
-    .body-content {
-        padding-top: 50px;
-    }
+::-webkit-scrollbar {
+    height: 0px;
+    width: 0px;
+    background: none;
+}
+
+body {
+    font-family: 'Arimo', sans-serif;
+    margin: 0 0 60px; /* altura do footer */
+}
+
+html {
+    position: relative;
+    height: 100%;
 }
