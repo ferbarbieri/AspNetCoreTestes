@@ -17,44 +17,53 @@ namespace Application
     {
         private IUsuarioRepository _repo { get; }
 
-        private IMapper _mapper;
-        private IConfigurationRoot _config;
+        private readonly IMapper _mapper;
+        private readonly IConfigurationRoot _config;
+        private readonly UserInfo _userInfo;
 
         public UsuarioApplicationService(
             IUsuarioRepository repo,
             IMapper mapper,
-            IConfigurationRoot config)
+            IConfigurationRoot config,
+            UserInfo userInfo)
         {
             _repo = repo;
             _mapper = mapper;
             _config = config;
+            _userInfo = userInfo;
         }
 
         #region Queries
 
-        public Task<PaginatedResults<Usuario>> ListarTodos(int paginaAtual, int totalPorPagina)
+        public async Task<PaginatedResults<UsuarioViewModel>> ListarTodos(int paginaAtual, int totalPorPagina)
         {
-            return _repo.GetAll(new PaginationInput(paginaAtual, totalPorPagina));
+            return _mapper.Map<PaginatedResults<UsuarioViewModel>>(
+                await _repo.GetAll(new PaginationInput(paginaAtual, totalPorPagina)));
         }
 
-        public Task<PaginatedResults<Usuario>> FiltrarPorNome(string nome, int paginaAtual, int totalPorPagina)
+        public async Task<PaginatedResults<UsuarioViewModel>> FiltrarPorNome(string nome, int paginaAtual, int totalPorPagina)
         {
-            return _repo.GetAllBy(
-                c=>c.Nome.StartsWith(nome),
-                new PaginationInput(paginaAtual, totalPorPagina));
+            return _mapper.Map<PaginatedResults<UsuarioViewModel>>(
+                await _repo.GetAllBy(c=>c.Nome.StartsWith(nome), new PaginationInput(paginaAtual, totalPorPagina)));
         }
         
         public async Task<UsuarioViewModel> Obter(int id)
         {
-            return _mapper.Map<UsuarioViewModel>(await ObterUsuario(id));
+            return _mapper.Map<UsuarioViewModel>(
+                await ObterUsuario(id));
         }
 
         #endregion
 
         #region Commands
 
-        public async Task Adicionar(UsuarioInput input)
+        public async Task<UsuarioViewModel> Adicionar(UsuarioInput input)
         {
+            if(input.Email.Split('@')[1] != _userInfo.Tenant)
+            {
+                throw new FieldsValidationException($"O Email informado não pertence ao domínio ({_userInfo.Tenant}).");
+            }
+
             if(await _repo.GetByEmail(input.Email) != null)
             {
                 throw new FieldsValidationException("O Email informado já existe.");
@@ -66,6 +75,7 @@ namespace Application
             var userEvent = new UsuarioCriadoEvent(usuario);
 
             DomainEvents.Raise(userEvent);
+            return _mapper.Map<UsuarioViewModel>(usuario);
         }
         
         public async Task Excluir(int id)

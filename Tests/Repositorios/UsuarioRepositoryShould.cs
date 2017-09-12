@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using Infra.Repositories.Contexts;
+using Microsoft.EntityFrameworkCore;
 using Repositories;
 using System;
 using System.Linq;
@@ -10,13 +11,19 @@ namespace Tests.Repositorios
     public class UsuarioRepositoryShould
     {
 
-        [Fact(Skip ="Não funciona DomainEvents")]
+        [Theory]
         [Trait("Integration", "")]
         [Trait("Repositorios", "")]
-        public async void CriarObterAtualizarExcluirUsuario()
+        [InlineData("viceri.com.br")]
+        [InlineData("bazooca.com.br")]
+        public async void CriarObterAtualizarExcluirUsuario(string tenant)
         {
+            var options = new DbContextOptionsBuilder<AdminContext>();
+            options.UseSqlServer($"Server = (localdb)\\mssqllocaldb; Database = {tenant}; Trusted_Connection = True;");
+
+
             // O certo é ter um teste por método!
-            using (var context = new AdminContext(ContextOptions<AdminContext>.GetOptions()))
+            using (var context = new AdminContext(options.Options))
             {
                 var repo = new UsuarioRepository(context);
                 var usuario = new Usuario("Fernando", $"fernando_{DateTime.Now.Millisecond}_{DateTime.Now.Second}@viceri.com.br", "12345678");
@@ -28,7 +35,7 @@ namespace Tests.Repositorios
 
                 Assert.Equal("Fernando", usuarioObter.Nome);
 
-                usuario.UpdateInfo("Barbieri", "NovoEmail@lala.com");
+                usuario.UpdateInfo("Barbieri", "novo" + usuario.Email);
 
                 usuario.PromoverParaAdministrador();
 
@@ -41,10 +48,10 @@ namespace Tests.Repositorios
                 Assert.NotNull(usuarioAtualizado.Nome);
 
                 Assert.Equal("Barbieri", usuarioAtualizado.Nome);
-                
+
                 await repo.Delete(usuario);
 
-                var usuarioExcluido = repo.GetById(usuario.Id);
+                var usuarioExcluido = await repo.GetById(usuario.Id);
 
                 Assert.Null(usuarioExcluido);
 

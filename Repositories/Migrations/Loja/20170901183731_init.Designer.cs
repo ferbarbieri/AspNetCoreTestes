@@ -10,7 +10,7 @@ using System;
 
 namespace Infra.Repositories.Migrations.Loja
 {
-    [DbContext(typeof(LojaContext))]
+    [DbContext(typeof(AdminContext))]
     [Migration("20170901183731_init")]
     partial class init
     {

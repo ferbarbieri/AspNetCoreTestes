@@ -5,6 +5,7 @@ using Application.Interfaces;
 using Application.Input;
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
+using Application.ViewModels;
 
 namespace App.WebAPI.Controllers
 {
@@ -44,7 +45,8 @@ namespace App.WebAPI.Controllers
         /// </summary>
         /// <param name="id">ID do usuario</param>
         /// <returns><see cref="Usuario"/></returns>
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("{id}", Name = "GetUsuarioById")]
         [ProducesResponseType(typeof(Usuario), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> Get(int id)
@@ -58,12 +60,12 @@ namespace App.WebAPI.Controllers
         /// <param name="usuario"><see cref="UsuarioInput"/></param>
         /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(typeof(Usuario), 200)]
+        [ProducesResponseType(typeof(UsuarioViewModel), 201)]
         [ProducesResponseType(400)]
         public async Task<IActionResult> Post([FromBody] UsuarioInput usuario)
         {
-            await _appService.Adicionar(usuario);
-            return Ok();
+            var u = await _appService.Adicionar(usuario);
+            return CreatedAtRoute("GetUsuarioById", new { id = u.Id }, u);
         }
 
         /// <summary>

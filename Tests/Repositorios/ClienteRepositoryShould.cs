@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using Infra.Repositories.Contexts;
+using Microsoft.EntityFrameworkCore;
 using Repositories;
 using System.Linq;
 using Xunit;
@@ -9,13 +10,18 @@ namespace Tests.Repositorios
     public class ClienteRepositoryShould
     {
         
-        [Fact]
+        [Theory]
         [Trait("Integration", "")]
         [Trait("Repositorios", "")]
-        public async void CriarObterAtualizarExcluirCliente()
+        [InlineData("viceri.com.br")]
+        [InlineData("bazooca.com.br")]
+        public async void CriarObterAtualizarExcluirCliente(string tenant)
         {
+            var options = new DbContextOptionsBuilder<LojaContext>();
+            options.UseSqlServer($"Server = (localdb)\\mssqllocaldb; Database = {tenant}; Trusted_Connection = True;");
+
             // O certo é ter um teste por método!
-            using (var context = new LojaContext(ContextOptions<LojaContext>.GetOptions()))
+            using (var context = new LojaContext(options.Options))
             {
                 var repo = new ClienteRepository(context);
                 var cliente = new Cliente("Fernando");
@@ -41,7 +47,7 @@ namespace Tests.Repositorios
                 
                 await repo.Delete(cliente);
 
-                var clienteExcluido = repo.GetById(cliente.Id);
+                var clienteExcluido = await repo.GetById(cliente.Id);
 
                 Assert.Null(clienteExcluido);
 

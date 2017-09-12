@@ -1,6 +1,7 @@
 ﻿using Application.ViewModels;
 using AutoMapper;
 using Domain.Models;
+using Domain.SharedKernel.Queries;
 
 namespace Application.Mappings
 {
@@ -10,6 +11,7 @@ namespace Application.Mappings
         {
             //Adicionar todos os mapeamentos aqui.
             CreateMap<Usuario, UsuarioViewModel>();
+            CreateMap<PaginatedResults<Usuario>, PaginatedResults<UsuarioViewModel>>();
         }
     }
 }

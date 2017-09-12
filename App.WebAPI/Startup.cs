@@ -34,6 +34,10 @@ using App.WebAPI.Swagger;
 using App.WebAPI.AutoMapperConfig;
 using System.Security.Claims;
 using System.Linq;
+using Application.ViewModels;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Collections.Generic;
 
 namespace App.WebAPI
 {
@@ -212,7 +216,10 @@ namespace App.WebAPI
             container.Register<IProdutoRepository, ProdutoRepository>(Lifestyle.Scoped);
             container.Register<IClienteRepository, ClienteRepository>(Lifestyle.Scoped);
             container.Register<ITenantRepository, TenantRepository>(Lifestyle.Scoped);
-            
+
+            // Tenho o usuario logado disponível para injetar em qualquer classe.
+            container.Register(typeof(UserInfo),() => ObterUserInfo(), Lifestyle.Scoped);
+
             //DbContexts
             //TODO: Verificar se está sendo realizado o dispose.
             container.Register(() => 
@@ -252,7 +259,7 @@ namespace App.WebAPI
             // Cross-wire ASP.NET services (if any). For instance:
             container.CrossWire<ILoggerFactory>(app);
         }
-
+        
         private string GetDatabaseForUser()
         {
             var tenant = ObterTenantUsuario();
@@ -272,21 +279,55 @@ namespace App.WebAPI
         /// <returns></returns>
         private string ObterTenantUsuario()
         {
+            var usuario = container.GetInstance<UserInfo>();
+            return usuario?.Tenant;
+        }
+
+        private UserInfo ObterUserInfo()
+        {
+            var userInfo = new UserInfo();
+
+            userInfo.Usuario = ObterUsuario();
+            userInfo.Tenant = userInfo.Usuario?.Email.Split('@')[1];
+
+            return userInfo;
+        }
+
+
+        private UsuarioViewModel ObterUsuario()
+        {
             var httpContext = container.GetInstance<IHttpContextAccessor>();
 
             if (httpContext.HttpContext == null
                 || httpContext.HttpContext.User == null
                 || httpContext.HttpContext.User.Identity == null)
                 return null;
-            
-            if (httpContext.HttpContext.User.Identity is ClaimsIdentity identity)
-            {
-                var claims = identity.Claims.ToList();
-                var claim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
-                return claim?.Value.Split('@')[1];
-            }
 
-            return null;
+            var usuario = new UsuarioViewModel();
+
+            var userIdentity = httpContext.HttpContext.User.Identity;
+
+            //TODO: Deve ter um jeito melhor de fazer isso:
+            var identity = userIdentity as ClaimsIdentity;
+            if (identity == null)
+                return null;
+
+            var claims = identity.Claims.ToList();
+            var id = GetClaimValue(claims, JwtRegisteredClaimNames.Jti);
+
+            usuario.Id = int.Parse(id);
+            usuario.Nome = GetClaimValue(claims, ClaimTypes.GivenName);
+            usuario.Email = GetClaimValue(claims, ClaimTypes.Email);
+            usuario.Perfil = GetClaimValue(claims, "Profile");
+
+            return usuario;
         }
+
+        private string GetClaimValue(IList<Claim> claims, string type)
+        {
+            return claims.FirstOrDefault(c => c.Type == type)?.Value;
+        }
+
+
     }
 }
