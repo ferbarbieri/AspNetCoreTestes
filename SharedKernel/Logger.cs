@@ -1,6 +1,7 @@
 ﻿using NLog;
 using NLog.Config;
 using NLog.Targets;
+using System;
 
 namespace SharedKernel
 {
@@ -61,6 +62,11 @@ namespace SharedKernel
         public static void Fatal(string msg)
         {
             _logger.Fatal(msg);
+        }
+
+        public static void Fatal(Exception ex)
+        {
+            _logger.Fatal(ex, "Ocorreu um erro", null);
         }
 
         public static void Log(string msg)

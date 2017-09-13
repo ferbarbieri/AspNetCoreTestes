@@ -53,6 +53,7 @@ namespace App.WebAPI.Controllers
                 .NotNull("Credenciais", login)
                 .NotNullOrEmpty("Email", login.Email)
                 .NotNullOrEmpty("Senha", login.Senha)
+                .ValidEmail("Email", login.Email)
                 .Validate("Credenciais Inválidas");
             
             var user = await _loginService.Login(login.Email, login.Senha);

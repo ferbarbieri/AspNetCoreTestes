@@ -1,6 +1,7 @@
 ﻿using Domain.SharedKernel.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using SharedKernel;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -46,11 +47,12 @@ namespace App.WebAPI.Middleware
                     break;
                 default:
                     code = HttpStatusCode.InternalServerError; // 500 se for qualquer outro erro
+                    Logger.Fatal(exception);
                     break;
             }
 
             var errorObj = new ErrorResponse(exception);
-
+            
             var result = JsonConvert.SerializeObject(errorObj);
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;

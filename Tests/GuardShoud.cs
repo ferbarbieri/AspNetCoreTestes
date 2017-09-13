@@ -8,9 +8,9 @@ namespace Tests
     {
         [Trait("Unit Test","")]
         [Theory]
-        [InlineData(1, 1.1d, "string nao nula", "string nao vazia", "fbarbieri@live.com")]
-        [InlineData(1000, -500.1d, "", "0", "Fbarbieri@viceri.com.br")]
-        public void Validate(int valorMaior, decimal valorMenor, object notNull, string notEmpty, string email)
+        [InlineData(1, 1.1d, "string nao nula", "string nao vazia", "fbarbieri@live.com", "live.com")]
+        [InlineData(1000, -500.1d, "", "0", "Fbarbieri@viceri.com.br", "viceri.com.br")]
+        public void Validate(int valorMaior, decimal valorMenor, object notNull, string notEmpty, string email, string domain)
         {
             var ex = Record.Exception(() =>
              new Guard()
@@ -19,6 +19,7 @@ namespace Tests
                  .NotNull("Não Nulo", notNull)
                  .NotNullOrEmpty("NaoVazio", notEmpty)
                  .ValidEmail("email", email)
+                 .ValidDomain("domain", domain)
                  .Validate()
             );
             Assert.Null(ex);
@@ -26,10 +27,10 @@ namespace Tests
 
         [Trait("Unit Test", "")]
         [Theory]
-        [InlineData(3, 5.1d, null, "", "fbarbieri")]
-        [InlineData(-10, 500.1d, null, null, "Fbarbieri@viceri")]
-        [InlineData(5, 5, null, null, "Fbarbieri@viceri.")]
-        public void ThrowExceptionOnInvalidInputData(int valorMaior, decimal valorMenor, object notNull, string notEmpty, string email)
+        [InlineData(3, 5.1d, null, "", "fbarbieri", "")]
+        [InlineData(-10, 500.1d, null, null, "Fbarbieri@viceri", "viceri")]
+        [InlineData(5, 5, null, null, "Fbarbieri@viceri.", "viceri.")]
+        public void ThrowExceptionOnInvalidInputData(int valorMaior, decimal valorMenor, object notNull, string notEmpty, string email, string domain)
         {
             var ex = Record.Exception(() =>
              new Guard()
@@ -38,6 +39,7 @@ namespace Tests
                  .NotNull("Não Nulo", notNull)
                  .NotNullOrEmpty("NaoVazio", notEmpty)
                  .ValidEmail("email", email)
+                 .ValidDomain("domain", domain)
                  .Validate()
             );
 
@@ -45,7 +47,7 @@ namespace Tests
 
             var info = ((FieldsValidationException)ex).FieldsValidation;
 
-            Assert.Equal(5, info.Count);
+            Assert.Equal(6, info.Count);
             
         }
     }

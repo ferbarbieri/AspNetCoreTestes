@@ -35,7 +35,7 @@ namespace App.WebAPI.Controllers
         /// <param name="porPagina">Quantidade de itens por página</param>
         /// <returns><see cref="IList{Usuario}"/></returns>
         [HttpGet]
-        [ResponseOK(typeof(IList<Usuario>))]
+        [ResponseOK(typeof(IList<UsuarioViewModel>))]
         public async Task<IActionResult> Get(int pagina, int porPagina)
         {
             return Ok(await _appService.ListarTodos(pagina, porPagina));
@@ -48,7 +48,7 @@ namespace App.WebAPI.Controllers
         /// <returns><see cref="Usuario"/></returns>
         [HttpGet]
         [Route("{id}", Name = "GetUsuarioById")]
-        [ResponseOK(typeof(Usuario))]
+        [ResponseOK(typeof(UsuarioViewModel))]
         [ResponseNotFound]
         public async Task<IActionResult> Get(int id)
         {
